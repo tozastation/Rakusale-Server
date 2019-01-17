@@ -1,0 +1,25 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: rakusale
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: "kubernetes-ingress"
+    # certmanager.k8s.io/cluster-issuer: letsencrypt-staging
+    # certmanager.k8s.io/acme-http01-edit-in-place: "true"
+spec:
+  tls:
+  - secretName: miraikeitai-tk
+  - hosts:
+    - api.miraikeitai.tk
+  rules:
+  - host: api.miraikeitai.tk
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: rakusale
+          servicePort: 80
+  backend:
+    serviceName: rakusale
+    servicePort: 80

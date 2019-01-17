@@ -1,0 +1,18 @@
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: miraikeitai-tk
+spec:
+  secretName: miraikeitai-tk
+  issuerRef:
+    name: letsencrypt-staging
+    kind: ClusterIssuer
+  commonName: api.miraikeitai.tk
+  dnsNames:
+  - api.miraikeitai.tk
+  acme:
+    config:
+    - http01:
+        ingress: rakusale
+      domains:
+      - api.miraikeitai.tk
