@@ -4,10 +4,13 @@ import (
 	"context"
 	"github.com/2018-miraikeitai-org/Rakusale-Another-Server/domain/repository"
 	"github.com/2018-miraikeitai-org/Rakusale-Another-Server/interfaces/server/protocol"
+	"github.com/jinzhu/gorm"
 )
 
 // UserRepository is
-type UserRepository struct{}
+type UserRepository struct {
+	Conn *gorm.DB
+}
 
 // NewUserRepository is
 func NewUserRepository() repository.UserRepository {

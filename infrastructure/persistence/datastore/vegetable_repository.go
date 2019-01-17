@@ -4,10 +4,13 @@ import (
 	"context"
 	"github.com/2018-miraikeitai-org/Rakusale-Another-Server/domain/repository"
 	"github.com/2018-miraikeitai-org/Rakusale-Another-Server/interfaces/server/protocol"
+	"github.com/jinzhu/gorm"
 )
 
 // VegetableRepository is
-type VegetableRepository struct{}
+type VegetableRepository struct {
+	Conn *gorm.DB
+}
 
 // NewVegetableRepository is
 func NewVegetableRepository() repository.VegetableRepository {
@@ -35,6 +38,6 @@ func (r *VegetableRepository) UpdateMyVegetable(ctx context.Context, userAccessT
 }
 
 // DeleteMyVegetable is
-func (r *ShopRepository) DeleteMyVegetable(ctx context.Context, userAccessToken string, vegetableID uint) error {
+func (r *VegetableRepository) DeleteMyVegetable(ctx context.Context, userAccessToken string, vegetableID uint) error {
 	return nil
 }
