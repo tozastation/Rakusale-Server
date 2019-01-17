@@ -1,0 +1,1 @@
+repositoryに関してはDIPでinfrastructure層に実装を定義するため、interfaceのみを定義します。
