@@ -1,0 +1,11 @@
+version: '3'
+services:
+  db:
+    image: mysql:5.7.22
+    environment:
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_USER: rakusale
+        MYSQL_PASSWORD: rakusale
+        MYSQL_DATABASE: rakusale
+    ports: 
+      - "3306:3306"

@@ -1,0 +1,14 @@
+version: '3'
+services:
+  cloud-proxy: # Cloud SQL Proxy
+    container_name: cloud-proxy
+    image: "gcr.io/cloudsql-docker/gce-proxy:latest"
+    command:
+      ["/cloud_sql_proxy",
+      "-instances=rakusale-k8s:asia-east1:rakusale-dev2=tcp:0.0.0.0:3306",
+      "-credential_file=/config/miraikeitai2018.json"]
+    volumes:
+      - "./secret/miraikeitai2018.json:/config/miraikeitai2018.json"
+    ports:
+      - "3306:3306"
+    restart: always
