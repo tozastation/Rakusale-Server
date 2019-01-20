@@ -17,5 +17,5 @@ RUN make
 FROM alpine
 RUN apk add --no-cache ca-certificates
 COPY --from=builder /go/src/github.com/2018-miraikeitai-org/Rakusale-Another-Server/app /app
-EXPOSE 8080
+EXPOSE 3001
 ENTRYPOINT ["/app"]
