@@ -10,13 +10,10 @@ import (
 var db *gorm.DB
 
 // OpenDBConnection is
-func OpenDBConnection() (*gorm.DB, error) {
+func OpenDBConnection() *gorm.DB {
 	dbType := os.Getenv("DB_TYPE")
 	connectionString := os.Getenv("CONNECTION_STRING")
-	db, err := gorm.Open(dbType, connectionString)
-	if err != nil {
-		return nil, err
-	}
+	db, _ := gorm.Open(dbType, connectionString)
 	// [Initialize] Database
 	db.AutoMigrate(&model.Vegetable{})
 	fmt.Println("[Init] Vegetable Model")
@@ -33,7 +30,7 @@ func OpenDBConnection() (*gorm.DB, error) {
 	db.AutoMigrate(&model.User{})
 	fmt.Println("[Init] User Model")
 
-	return db, nil
+	return db
 }
 
 // CloseDBConnction is
