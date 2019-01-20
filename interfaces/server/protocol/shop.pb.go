@@ -20,7 +20,7 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
-type Shop struct {
+type RequestShop struct {
 	ImagePath            string   `protobuf:"bytes,1,opt,name=image_path,json=imagePath,proto3" json:"image_path,omitempty"`
 	Name                 string   `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	Latitude             float32  `protobuf:"fixed32,3,opt,name=latitude,proto3" json:"latitude,omitempty"`
@@ -31,378 +31,295 @@ type Shop struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *Shop) Reset()         { *m = Shop{} }
-func (m *Shop) String() string { return proto.CompactTextString(m) }
-func (*Shop) ProtoMessage()    {}
-func (*Shop) Descriptor() ([]byte, []int) {
+func (m *RequestShop) Reset()         { *m = RequestShop{} }
+func (m *RequestShop) String() string { return proto.CompactTextString(m) }
+func (*RequestShop) ProtoMessage()    {}
+func (*RequestShop) Descriptor() ([]byte, []int) {
 	return fileDescriptor_0f3030369b20fd61, []int{0}
 }
 
-func (m *Shop) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_Shop.Unmarshal(m, b)
+func (m *RequestShop) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_RequestShop.Unmarshal(m, b)
 }
-func (m *Shop) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_Shop.Marshal(b, m, deterministic)
+func (m *RequestShop) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_RequestShop.Marshal(b, m, deterministic)
 }
-func (m *Shop) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Shop.Merge(m, src)
+func (m *RequestShop) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_RequestShop.Merge(m, src)
 }
-func (m *Shop) XXX_Size() int {
-	return xxx_messageInfo_Shop.Size(m)
+func (m *RequestShop) XXX_Size() int {
+	return xxx_messageInfo_RequestShop.Size(m)
 }
-func (m *Shop) XXX_DiscardUnknown() {
-	xxx_messageInfo_Shop.DiscardUnknown(m)
+func (m *RequestShop) XXX_DiscardUnknown() {
+	xxx_messageInfo_RequestShop.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_Shop proto.InternalMessageInfo
+var xxx_messageInfo_RequestShop proto.InternalMessageInfo
 
-func (m *Shop) GetImagePath() string {
+func (m *RequestShop) GetImagePath() string {
 	if m != nil {
 		return m.ImagePath
 	}
 	return ""
 }
 
-func (m *Shop) GetName() string {
+func (m *RequestShop) GetName() string {
 	if m != nil {
 		return m.Name
 	}
 	return ""
 }
 
-func (m *Shop) GetLatitude() float32 {
+func (m *RequestShop) GetLatitude() float32 {
 	if m != nil {
 		return m.Latitude
 	}
 	return 0
 }
 
-func (m *Shop) GetLongitude() float32 {
+func (m *RequestShop) GetLongitude() float32 {
 	if m != nil {
 		return m.Longitude
 	}
 	return 0
 }
 
-func (m *Shop) GetIntroduction() string {
+func (m *RequestShop) GetIntroduction() string {
 	if m != nil {
 		return m.Introduction
 	}
 	return ""
 }
 
-type GetShopRequest struct {
+type ResponseShop struct {
+	Id                   int64    `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	ImagePath            string   `protobuf:"bytes,2,opt,name=image_path,json=imagePath,proto3" json:"image_path,omitempty"`
+	Name                 string   `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+	Latitude             float32  `protobuf:"fixed32,4,opt,name=latitude,proto3" json:"latitude,omitempty"`
+	Longitude            float32  `protobuf:"fixed32,5,opt,name=longitude,proto3" json:"longitude,omitempty"`
+	Introduction         string   `protobuf:"bytes,6,opt,name=introduction,proto3" json:"introduction,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *ResponseShop) Reset()         { *m = ResponseShop{} }
+func (m *ResponseShop) String() string { return proto.CompactTextString(m) }
+func (*ResponseShop) ProtoMessage()    {}
+func (*ResponseShop) Descriptor() ([]byte, []int) {
+	return fileDescriptor_0f3030369b20fd61, []int{1}
+}
+
+func (m *ResponseShop) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ResponseShop.Unmarshal(m, b)
+}
+func (m *ResponseShop) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ResponseShop.Marshal(b, m, deterministic)
+}
+func (m *ResponseShop) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ResponseShop.Merge(m, src)
+}
+func (m *ResponseShop) XXX_Size() int {
+	return xxx_messageInfo_ResponseShop.Size(m)
+}
+func (m *ResponseShop) XXX_DiscardUnknown() {
+	xxx_messageInfo_ResponseShop.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ResponseShop proto.InternalMessageInfo
+
+func (m *ResponseShop) GetId() int64 {
+	if m != nil {
+		return m.Id
+	}
+	return 0
+}
+
+func (m *ResponseShop) GetImagePath() string {
+	if m != nil {
+		return m.ImagePath
+	}
+	return ""
+}
+
+func (m *ResponseShop) GetName() string {
+	if m != nil {
+		return m.Name
+	}
+	return ""
+}
+
+func (m *ResponseShop) GetLatitude() float32 {
+	if m != nil {
+		return m.Latitude
+	}
+	return 0
+}
+
+func (m *ResponseShop) GetLongitude() float32 {
+	if m != nil {
+		return m.Longitude
+	}
+	return 0
+}
+
+func (m *ResponseShop) GetIntroduction() string {
+	if m != nil {
+		return m.Introduction
+	}
+	return ""
+}
+
+// Read
+type GetMyShopsRequest struct {
 	Token                string   `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *GetShopRequest) Reset()         { *m = GetShopRequest{} }
-func (m *GetShopRequest) String() string { return proto.CompactTextString(m) }
-func (*GetShopRequest) ProtoMessage()    {}
-func (*GetShopRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_0f3030369b20fd61, []int{1}
+func (m *GetMyShopsRequest) Reset()         { *m = GetMyShopsRequest{} }
+func (m *GetMyShopsRequest) String() string { return proto.CompactTextString(m) }
+func (*GetMyShopsRequest) ProtoMessage()    {}
+func (*GetMyShopsRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_0f3030369b20fd61, []int{2}
 }
 
-func (m *GetShopRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_GetShopRequest.Unmarshal(m, b)
+func (m *GetMyShopsRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetMyShopsRequest.Unmarshal(m, b)
 }
-func (m *GetShopRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_GetShopRequest.Marshal(b, m, deterministic)
+func (m *GetMyShopsRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetMyShopsRequest.Marshal(b, m, deterministic)
 }
-func (m *GetShopRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_GetShopRequest.Merge(m, src)
+func (m *GetMyShopsRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetMyShopsRequest.Merge(m, src)
 }
-func (m *GetShopRequest) XXX_Size() int {
-	return xxx_messageInfo_GetShopRequest.Size(m)
+func (m *GetMyShopsRequest) XXX_Size() int {
+	return xxx_messageInfo_GetMyShopsRequest.Size(m)
 }
-func (m *GetShopRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_GetShopRequest.DiscardUnknown(m)
+func (m *GetMyShopsRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetMyShopsRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_GetShopRequest proto.InternalMessageInfo
+var xxx_messageInfo_GetMyShopsRequest proto.InternalMessageInfo
 
-func (m *GetShopRequest) GetToken() string {
+func (m *GetMyShopsRequest) GetToken() string {
 	if m != nil {
 		return m.Token
 	}
 	return ""
 }
 
-type GetShopResponse struct {
-	Shops                []*Shop  `protobuf:"bytes,1,rep,name=shops,proto3" json:"shops,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+type GetMyShopsResponse struct {
+	Shops                []*RequestShop `protobuf:"bytes,1,rep,name=shops,proto3" json:"shops,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
 }
 
-func (m *GetShopResponse) Reset()         { *m = GetShopResponse{} }
-func (m *GetShopResponse) String() string { return proto.CompactTextString(m) }
-func (*GetShopResponse) ProtoMessage()    {}
-func (*GetShopResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_0f3030369b20fd61, []int{2}
+func (m *GetMyShopsResponse) Reset()         { *m = GetMyShopsResponse{} }
+func (m *GetMyShopsResponse) String() string { return proto.CompactTextString(m) }
+func (*GetMyShopsResponse) ProtoMessage()    {}
+func (*GetMyShopsResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_0f3030369b20fd61, []int{3}
 }
 
-func (m *GetShopResponse) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_GetShopResponse.Unmarshal(m, b)
+func (m *GetMyShopsResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetMyShopsResponse.Unmarshal(m, b)
 }
-func (m *GetShopResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_GetShopResponse.Marshal(b, m, deterministic)
+func (m *GetMyShopsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetMyShopsResponse.Marshal(b, m, deterministic)
 }
-func (m *GetShopResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_GetShopResponse.Merge(m, src)
+func (m *GetMyShopsResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetMyShopsResponse.Merge(m, src)
 }
-func (m *GetShopResponse) XXX_Size() int {
-	return xxx_messageInfo_GetShopResponse.Size(m)
+func (m *GetMyShopsResponse) XXX_Size() int {
+	return xxx_messageInfo_GetMyShopsResponse.Size(m)
 }
-func (m *GetShopResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_GetShopResponse.DiscardUnknown(m)
+func (m *GetMyShopsResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetMyShopsResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_GetShopResponse proto.InternalMessageInfo
+var xxx_messageInfo_GetMyShopsResponse proto.InternalMessageInfo
 
-func (m *GetShopResponse) GetShops() []*Shop {
+func (m *GetMyShopsResponse) GetShops() []*RequestShop {
 	if m != nil {
 		return m.Shops
 	}
 	return nil
 }
 
-type PostShopRequest struct {
-	Token                string   `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+type ShopsEmpty struct {
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *PostShopRequest) Reset()         { *m = PostShopRequest{} }
-func (m *PostShopRequest) String() string { return proto.CompactTextString(m) }
-func (*PostShopRequest) ProtoMessage()    {}
-func (*PostShopRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_0f3030369b20fd61, []int{3}
-}
-
-func (m *PostShopRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_PostShopRequest.Unmarshal(m, b)
-}
-func (m *PostShopRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_PostShopRequest.Marshal(b, m, deterministic)
-}
-func (m *PostShopRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_PostShopRequest.Merge(m, src)
-}
-func (m *PostShopRequest) XXX_Size() int {
-	return xxx_messageInfo_PostShopRequest.Size(m)
-}
-func (m *PostShopRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_PostShopRequest.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_PostShopRequest proto.InternalMessageInfo
-
-func (m *PostShopRequest) GetToken() string {
-	if m != nil {
-		return m.Token
-	}
-	return ""
-}
-
-type PostShopResponse struct {
-	Status               string   `protobuf:"bytes,1,opt,name=status,proto3" json:"status,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *PostShopResponse) Reset()         { *m = PostShopResponse{} }
-func (m *PostShopResponse) String() string { return proto.CompactTextString(m) }
-func (*PostShopResponse) ProtoMessage()    {}
-func (*PostShopResponse) Descriptor() ([]byte, []int) {
+func (m *ShopsEmpty) Reset()         { *m = ShopsEmpty{} }
+func (m *ShopsEmpty) String() string { return proto.CompactTextString(m) }
+func (*ShopsEmpty) ProtoMessage()    {}
+func (*ShopsEmpty) Descriptor() ([]byte, []int) {
 	return fileDescriptor_0f3030369b20fd61, []int{4}
 }
 
-func (m *PostShopResponse) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_PostShopResponse.Unmarshal(m, b)
+func (m *ShopsEmpty) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ShopsEmpty.Unmarshal(m, b)
 }
-func (m *PostShopResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_PostShopResponse.Marshal(b, m, deterministic)
+func (m *ShopsEmpty) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ShopsEmpty.Marshal(b, m, deterministic)
 }
-func (m *PostShopResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_PostShopResponse.Merge(m, src)
+func (m *ShopsEmpty) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ShopsEmpty.Merge(m, src)
 }
-func (m *PostShopResponse) XXX_Size() int {
-	return xxx_messageInfo_PostShopResponse.Size(m)
+func (m *ShopsEmpty) XXX_Size() int {
+	return xxx_messageInfo_ShopsEmpty.Size(m)
 }
-func (m *PostShopResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_PostShopResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_PostShopResponse proto.InternalMessageInfo
-
-func (m *PostShopResponse) GetStatus() string {
-	if m != nil {
-		return m.Status
-	}
-	return ""
+func (m *ShopsEmpty) XXX_DiscardUnknown() {
+	xxx_messageInfo_ShopsEmpty.DiscardUnknown(m)
 }
 
-type PutShopRequest struct {
-	Token                string   `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+var xxx_messageInfo_ShopsEmpty proto.InternalMessageInfo
+
+type GetAllShopsResponse struct {
+	Shops                []*ResponseShop `protobuf:"bytes,1,rep,name=shops,proto3" json:"shops,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
+	XXX_unrecognized     []byte          `json:"-"`
+	XXX_sizecache        int32           `json:"-"`
 }
 
-func (m *PutShopRequest) Reset()         { *m = PutShopRequest{} }
-func (m *PutShopRequest) String() string { return proto.CompactTextString(m) }
-func (*PutShopRequest) ProtoMessage()    {}
-func (*PutShopRequest) Descriptor() ([]byte, []int) {
+func (m *GetAllShopsResponse) Reset()         { *m = GetAllShopsResponse{} }
+func (m *GetAllShopsResponse) String() string { return proto.CompactTextString(m) }
+func (*GetAllShopsResponse) ProtoMessage()    {}
+func (*GetAllShopsResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_0f3030369b20fd61, []int{5}
 }
 
-func (m *PutShopRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_PutShopRequest.Unmarshal(m, b)
+func (m *GetAllShopsResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetAllShopsResponse.Unmarshal(m, b)
 }
-func (m *PutShopRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_PutShopRequest.Marshal(b, m, deterministic)
+func (m *GetAllShopsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetAllShopsResponse.Marshal(b, m, deterministic)
 }
-func (m *PutShopRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_PutShopRequest.Merge(m, src)
+func (m *GetAllShopsResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetAllShopsResponse.Merge(m, src)
 }
-func (m *PutShopRequest) XXX_Size() int {
-	return xxx_messageInfo_PutShopRequest.Size(m)
+func (m *GetAllShopsResponse) XXX_Size() int {
+	return xxx_messageInfo_GetAllShopsResponse.Size(m)
 }
-func (m *PutShopRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_PutShopRequest.DiscardUnknown(m)
+func (m *GetAllShopsResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetAllShopsResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_PutShopRequest proto.InternalMessageInfo
+var xxx_messageInfo_GetAllShopsResponse proto.InternalMessageInfo
 
-func (m *PutShopRequest) GetToken() string {
+func (m *GetAllShopsResponse) GetShops() []*ResponseShop {
 	if m != nil {
-		return m.Token
+		return m.Shops
 	}
-	return ""
+	return nil
 }
 
-type PutShopResponse struct {
-	Status               string   `protobuf:"bytes,1,opt,name=status,proto3" json:"status,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *PutShopResponse) Reset()         { *m = PutShopResponse{} }
-func (m *PutShopResponse) String() string { return proto.CompactTextString(m) }
-func (*PutShopResponse) ProtoMessage()    {}
-func (*PutShopResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_0f3030369b20fd61, []int{6}
-}
-
-func (m *PutShopResponse) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_PutShopResponse.Unmarshal(m, b)
-}
-func (m *PutShopResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_PutShopResponse.Marshal(b, m, deterministic)
-}
-func (m *PutShopResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_PutShopResponse.Merge(m, src)
-}
-func (m *PutShopResponse) XXX_Size() int {
-	return xxx_messageInfo_PutShopResponse.Size(m)
-}
-func (m *PutShopResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_PutShopResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_PutShopResponse proto.InternalMessageInfo
-
-func (m *PutShopResponse) GetStatus() string {
-	if m != nil {
-		return m.Status
-	}
-	return ""
-}
-
-type DeleteShopRequest struct {
-	Token                string   `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *DeleteShopRequest) Reset()         { *m = DeleteShopRequest{} }
-func (m *DeleteShopRequest) String() string { return proto.CompactTextString(m) }
-func (*DeleteShopRequest) ProtoMessage()    {}
-func (*DeleteShopRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_0f3030369b20fd61, []int{7}
-}
-
-func (m *DeleteShopRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_DeleteShopRequest.Unmarshal(m, b)
-}
-func (m *DeleteShopRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_DeleteShopRequest.Marshal(b, m, deterministic)
-}
-func (m *DeleteShopRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_DeleteShopRequest.Merge(m, src)
-}
-func (m *DeleteShopRequest) XXX_Size() int {
-	return xxx_messageInfo_DeleteShopRequest.Size(m)
-}
-func (m *DeleteShopRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_DeleteShopRequest.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_DeleteShopRequest proto.InternalMessageInfo
-
-func (m *DeleteShopRequest) GetToken() string {
-	if m != nil {
-		return m.Token
-	}
-	return ""
-}
-
-type DeleteShopResponse struct {
-	Status               string   `protobuf:"bytes,1,opt,name=status,proto3" json:"status,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *DeleteShopResponse) Reset()         { *m = DeleteShopResponse{} }
-func (m *DeleteShopResponse) String() string { return proto.CompactTextString(m) }
-func (*DeleteShopResponse) ProtoMessage()    {}
-func (*DeleteShopResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_0f3030369b20fd61, []int{8}
-}
-
-func (m *DeleteShopResponse) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_DeleteShopResponse.Unmarshal(m, b)
-}
-func (m *DeleteShopResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_DeleteShopResponse.Marshal(b, m, deterministic)
-}
-func (m *DeleteShopResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_DeleteShopResponse.Merge(m, src)
-}
-func (m *DeleteShopResponse) XXX_Size() int {
-	return xxx_messageInfo_DeleteShopResponse.Size(m)
-}
-func (m *DeleteShopResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_DeleteShopResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_DeleteShopResponse proto.InternalMessageInfo
-
-func (m *DeleteShopResponse) GetStatus() string {
-	if m != nil {
-		return m.Status
-	}
-	return ""
-}
-
+// Create
 type ShopImage struct {
 	Data                 []byte   `protobuf:"bytes,1,opt,name=data,proto3" json:"data,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -414,7 +331,7 @@ func (m *ShopImage) Reset()         { *m = ShopImage{} }
 func (m *ShopImage) String() string { return proto.CompactTextString(m) }
 func (*ShopImage) ProtoMessage()    {}
 func (*ShopImage) Descriptor() ([]byte, []int) {
-	return fileDescriptor_0f3030369b20fd61, []int{9}
+	return fileDescriptor_0f3030369b20fd61, []int{6}
 }
 
 func (m *ShopImage) XXX_Unmarshal(b []byte) error {
@@ -442,39 +359,268 @@ func (m *ShopImage) GetData() []byte {
 	return nil
 }
 
-type UploadShopImageResponse struct {
+type PostMyShopRequest struct {
+	Token                string       `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+	Image                *ShopImage   `protobuf:"bytes,2,opt,name=image,proto3" json:"image,omitempty"`
+	Shop                 *RequestShop `protobuf:"bytes,3,opt,name=shop,proto3" json:"shop,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
+	XXX_unrecognized     []byte       `json:"-"`
+	XXX_sizecache        int32        `json:"-"`
+}
+
+func (m *PostMyShopRequest) Reset()         { *m = PostMyShopRequest{} }
+func (m *PostMyShopRequest) String() string { return proto.CompactTextString(m) }
+func (*PostMyShopRequest) ProtoMessage()    {}
+func (*PostMyShopRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_0f3030369b20fd61, []int{7}
+}
+
+func (m *PostMyShopRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_PostMyShopRequest.Unmarshal(m, b)
+}
+func (m *PostMyShopRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_PostMyShopRequest.Marshal(b, m, deterministic)
+}
+func (m *PostMyShopRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_PostMyShopRequest.Merge(m, src)
+}
+func (m *PostMyShopRequest) XXX_Size() int {
+	return xxx_messageInfo_PostMyShopRequest.Size(m)
+}
+func (m *PostMyShopRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_PostMyShopRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_PostMyShopRequest proto.InternalMessageInfo
+
+func (m *PostMyShopRequest) GetToken() string {
+	if m != nil {
+		return m.Token
+	}
+	return ""
+}
+
+func (m *PostMyShopRequest) GetImage() *ShopImage {
+	if m != nil {
+		return m.Image
+	}
+	return nil
+}
+
+func (m *PostMyShopRequest) GetShop() *RequestShop {
+	if m != nil {
+		return m.Shop
+	}
+	return nil
+}
+
+type PostMyShopResponse struct {
 	Status               string   `protobuf:"bytes,1,opt,name=status,proto3" json:"status,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *UploadShopImageResponse) Reset()         { *m = UploadShopImageResponse{} }
-func (m *UploadShopImageResponse) String() string { return proto.CompactTextString(m) }
-func (*UploadShopImageResponse) ProtoMessage()    {}
-func (*UploadShopImageResponse) Descriptor() ([]byte, []int) {
+func (m *PostMyShopResponse) Reset()         { *m = PostMyShopResponse{} }
+func (m *PostMyShopResponse) String() string { return proto.CompactTextString(m) }
+func (*PostMyShopResponse) ProtoMessage()    {}
+func (*PostMyShopResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_0f3030369b20fd61, []int{8}
+}
+
+func (m *PostMyShopResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_PostMyShopResponse.Unmarshal(m, b)
+}
+func (m *PostMyShopResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_PostMyShopResponse.Marshal(b, m, deterministic)
+}
+func (m *PostMyShopResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_PostMyShopResponse.Merge(m, src)
+}
+func (m *PostMyShopResponse) XXX_Size() int {
+	return xxx_messageInfo_PostMyShopResponse.Size(m)
+}
+func (m *PostMyShopResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_PostMyShopResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_PostMyShopResponse proto.InternalMessageInfo
+
+func (m *PostMyShopResponse) GetStatus() string {
+	if m != nil {
+		return m.Status
+	}
+	return ""
+}
+
+// Update
+type PutMyShopRequest struct {
+	Token                string       `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+	Shop                 *RequestShop `protobuf:"bytes,2,opt,name=shop,proto3" json:"shop,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
+	XXX_unrecognized     []byte       `json:"-"`
+	XXX_sizecache        int32        `json:"-"`
+}
+
+func (m *PutMyShopRequest) Reset()         { *m = PutMyShopRequest{} }
+func (m *PutMyShopRequest) String() string { return proto.CompactTextString(m) }
+func (*PutMyShopRequest) ProtoMessage()    {}
+func (*PutMyShopRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_0f3030369b20fd61, []int{9}
+}
+
+func (m *PutMyShopRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_PutMyShopRequest.Unmarshal(m, b)
+}
+func (m *PutMyShopRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_PutMyShopRequest.Marshal(b, m, deterministic)
+}
+func (m *PutMyShopRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_PutMyShopRequest.Merge(m, src)
+}
+func (m *PutMyShopRequest) XXX_Size() int {
+	return xxx_messageInfo_PutMyShopRequest.Size(m)
+}
+func (m *PutMyShopRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_PutMyShopRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_PutMyShopRequest proto.InternalMessageInfo
+
+func (m *PutMyShopRequest) GetToken() string {
+	if m != nil {
+		return m.Token
+	}
+	return ""
+}
+
+func (m *PutMyShopRequest) GetShop() *RequestShop {
+	if m != nil {
+		return m.Shop
+	}
+	return nil
+}
+
+type PutMyShopResponse struct {
+	Status               string   `protobuf:"bytes,1,opt,name=status,proto3" json:"status,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *PutMyShopResponse) Reset()         { *m = PutMyShopResponse{} }
+func (m *PutMyShopResponse) String() string { return proto.CompactTextString(m) }
+func (*PutMyShopResponse) ProtoMessage()    {}
+func (*PutMyShopResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_0f3030369b20fd61, []int{10}
 }
 
-func (m *UploadShopImageResponse) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_UploadShopImageResponse.Unmarshal(m, b)
+func (m *PutMyShopResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_PutMyShopResponse.Unmarshal(m, b)
 }
-func (m *UploadShopImageResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_UploadShopImageResponse.Marshal(b, m, deterministic)
+func (m *PutMyShopResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_PutMyShopResponse.Marshal(b, m, deterministic)
 }
-func (m *UploadShopImageResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_UploadShopImageResponse.Merge(m, src)
+func (m *PutMyShopResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_PutMyShopResponse.Merge(m, src)
 }
-func (m *UploadShopImageResponse) XXX_Size() int {
-	return xxx_messageInfo_UploadShopImageResponse.Size(m)
+func (m *PutMyShopResponse) XXX_Size() int {
+	return xxx_messageInfo_PutMyShopResponse.Size(m)
 }
-func (m *UploadShopImageResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_UploadShopImageResponse.DiscardUnknown(m)
+func (m *PutMyShopResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_PutMyShopResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_UploadShopImageResponse proto.InternalMessageInfo
+var xxx_messageInfo_PutMyShopResponse proto.InternalMessageInfo
 
-func (m *UploadShopImageResponse) GetStatus() string {
+func (m *PutMyShopResponse) GetStatus() string {
+	if m != nil {
+		return m.Status
+	}
+	return ""
+}
+
+// Delete
+type DeleteMyShopRequest struct {
+	Token                string   `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+	ShopId               int64    `protobuf:"varint,2,opt,name=shop_id,json=shopId,proto3" json:"shop_id,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *DeleteMyShopRequest) Reset()         { *m = DeleteMyShopRequest{} }
+func (m *DeleteMyShopRequest) String() string { return proto.CompactTextString(m) }
+func (*DeleteMyShopRequest) ProtoMessage()    {}
+func (*DeleteMyShopRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_0f3030369b20fd61, []int{11}
+}
+
+func (m *DeleteMyShopRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DeleteMyShopRequest.Unmarshal(m, b)
+}
+func (m *DeleteMyShopRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DeleteMyShopRequest.Marshal(b, m, deterministic)
+}
+func (m *DeleteMyShopRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DeleteMyShopRequest.Merge(m, src)
+}
+func (m *DeleteMyShopRequest) XXX_Size() int {
+	return xxx_messageInfo_DeleteMyShopRequest.Size(m)
+}
+func (m *DeleteMyShopRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_DeleteMyShopRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DeleteMyShopRequest proto.InternalMessageInfo
+
+func (m *DeleteMyShopRequest) GetToken() string {
+	if m != nil {
+		return m.Token
+	}
+	return ""
+}
+
+func (m *DeleteMyShopRequest) GetShopId() int64 {
+	if m != nil {
+		return m.ShopId
+	}
+	return 0
+}
+
+type DeleteMyShopResponse struct {
+	Status               string   `protobuf:"bytes,1,opt,name=status,proto3" json:"status,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *DeleteMyShopResponse) Reset()         { *m = DeleteMyShopResponse{} }
+func (m *DeleteMyShopResponse) String() string { return proto.CompactTextString(m) }
+func (*DeleteMyShopResponse) ProtoMessage()    {}
+func (*DeleteMyShopResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_0f3030369b20fd61, []int{12}
+}
+
+func (m *DeleteMyShopResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DeleteMyShopResponse.Unmarshal(m, b)
+}
+func (m *DeleteMyShopResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DeleteMyShopResponse.Marshal(b, m, deterministic)
+}
+func (m *DeleteMyShopResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DeleteMyShopResponse.Merge(m, src)
+}
+func (m *DeleteMyShopResponse) XXX_Size() int {
+	return xxx_messageInfo_DeleteMyShopResponse.Size(m)
+}
+func (m *DeleteMyShopResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_DeleteMyShopResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DeleteMyShopResponse proto.InternalMessageInfo
+
+func (m *DeleteMyShopResponse) GetStatus() string {
 	if m != nil {
 		return m.Status
 	}
@@ -482,46 +628,55 @@ func (m *UploadShopImageResponse) GetStatus() string {
 }
 
 func init() {
-	proto.RegisterType((*Shop)(nil), "protocol.Shop")
-	proto.RegisterType((*GetShopRequest)(nil), "protocol.GetShopRequest")
-	proto.RegisterType((*GetShopResponse)(nil), "protocol.GetShopResponse")
-	proto.RegisterType((*PostShopRequest)(nil), "protocol.PostShopRequest")
-	proto.RegisterType((*PostShopResponse)(nil), "protocol.PostShopResponse")
-	proto.RegisterType((*PutShopRequest)(nil), "protocol.PutShopRequest")
-	proto.RegisterType((*PutShopResponse)(nil), "protocol.PutShopResponse")
-	proto.RegisterType((*DeleteShopRequest)(nil), "protocol.DeleteShopRequest")
-	proto.RegisterType((*DeleteShopResponse)(nil), "protocol.DeleteShopResponse")
+	proto.RegisterType((*RequestShop)(nil), "protocol.RequestShop")
+	proto.RegisterType((*ResponseShop)(nil), "protocol.ResponseShop")
+	proto.RegisterType((*GetMyShopsRequest)(nil), "protocol.GetMyShopsRequest")
+	proto.RegisterType((*GetMyShopsResponse)(nil), "protocol.GetMyShopsResponse")
+	proto.RegisterType((*ShopsEmpty)(nil), "protocol.ShopsEmpty")
+	proto.RegisterType((*GetAllShopsResponse)(nil), "protocol.GetAllShopsResponse")
 	proto.RegisterType((*ShopImage)(nil), "protocol.ShopImage")
-	proto.RegisterType((*UploadShopImageResponse)(nil), "protocol.UploadShopImageResponse")
+	proto.RegisterType((*PostMyShopRequest)(nil), "protocol.PostMyShopRequest")
+	proto.RegisterType((*PostMyShopResponse)(nil), "protocol.PostMyShopResponse")
+	proto.RegisterType((*PutMyShopRequest)(nil), "protocol.PutMyShopRequest")
+	proto.RegisterType((*PutMyShopResponse)(nil), "protocol.PutMyShopResponse")
+	proto.RegisterType((*DeleteMyShopRequest)(nil), "protocol.DeleteMyShopRequest")
+	proto.RegisterType((*DeleteMyShopResponse)(nil), "protocol.DeleteMyShopResponse")
 }
 
 func init() { proto.RegisterFile("shop.proto", fileDescriptor_0f3030369b20fd61) }
 
 var fileDescriptor_0f3030369b20fd61 = []byte{
-	// 400 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x92, 0xc1, 0xae, 0x93, 0x40,
-	0x14, 0x86, 0x4b, 0x81, 0xa6, 0x9c, 0x36, 0xad, 0x1e, 0x8d, 0x22, 0xd6, 0x58, 0x27, 0x46, 0xa9,
-	0x31, 0x4d, 0xac, 0x0b, 0x37, 0x4d, 0xdc, 0x68, 0x9a, 0xee, 0x08, 0xc6, 0xb5, 0x19, 0xcb, 0xa4,
-	0x10, 0x29, 0x83, 0x9d, 0xe1, 0x59, 0xee, 0x9b, 0xdd, 0xe7, 0xb9, 0x99, 0x81, 0x0b, 0xa5, 0xb7,
-	0x37, 0x74, 0xc5, 0xcc, 0xf9, 0xbf, 0xfc, 0xe7, 0xcc, 0xf9, 0x01, 0x10, 0x31, 0xcf, 0x97, 0xf9,
-	0x91, 0x4b, 0x8e, 0x43, 0xfd, 0xd9, 0xf1, 0x94, 0xdc, 0x18, 0x60, 0xfd, 0x8a, 0x79, 0x8e, 0x6f,
-	0x00, 0x92, 0x03, 0xdd, 0xb3, 0x3f, 0x39, 0x95, 0xb1, 0x6b, 0xcc, 0x0d, 0xdf, 0x09, 0x1d, 0x5d,
-	0x09, 0xa8, 0x8c, 0x11, 0xc1, 0xca, 0xe8, 0x81, 0xb9, 0x7d, 0x2d, 0xe8, 0x33, 0x7a, 0x30, 0x4c,
-	0xa9, 0x4c, 0x64, 0x11, 0x31, 0xd7, 0x9c, 0x1b, 0x7e, 0x3f, 0xac, 0xef, 0x38, 0x03, 0x27, 0xe5,
-	0xd9, 0xbe, 0x14, 0x2d, 0x2d, 0x36, 0x05, 0x24, 0x30, 0x4e, 0x32, 0x79, 0xe4, 0x51, 0xb1, 0x93,
-	0x09, 0xcf, 0x5c, 0x5b, 0xbb, 0xb6, 0x6a, 0xe4, 0x03, 0x4c, 0x36, 0x4c, 0xaa, 0xd9, 0x42, 0xf6,
-	0xbf, 0x60, 0x42, 0xe2, 0x73, 0xb0, 0x25, 0xff, 0xc7, 0xb2, 0x6a, 0xba, 0xf2, 0x42, 0xbe, 0xc1,
-	0xb4, 0xe6, 0x44, 0xce, 0x33, 0xc1, 0xf0, 0x3d, 0xd8, 0xea, 0xb1, 0xc2, 0x35, 0xe6, 0xa6, 0x3f,
-	0x5a, 0x4d, 0x96, 0xf7, 0xcf, 0x5d, 0x6a, 0xac, 0x14, 0xc9, 0x47, 0x98, 0x06, 0x5c, 0x5c, 0xd1,
-	0xe1, 0x13, 0x3c, 0x69, 0xc0, 0xaa, 0xc5, 0x0b, 0x18, 0x08, 0x49, 0x65, 0x21, 0x2a, 0xb4, 0xba,
-	0xa9, 0xa9, 0x83, 0xe2, 0x0a, 0xcf, 0x05, 0x4c, 0x6b, 0xae, 0xc3, 0x72, 0x01, 0x4f, 0x7f, 0xb0,
-	0x94, 0x49, 0xd6, 0xed, 0xfa, 0x19, 0xf0, 0x14, 0xed, 0x30, 0x7e, 0x0b, 0x8e, 0xe2, 0xb6, 0x2a,
-	0x64, 0x15, 0x70, 0x44, 0x25, 0xd5, 0xc8, 0x38, 0xd4, 0x67, 0xf2, 0x05, 0x5e, 0xfe, 0xce, 0x53,
-	0x4e, 0xa3, 0x1a, 0xeb, 0xf2, 0x5c, 0xdd, 0xf6, 0xc1, 0x56, 0xb4, 0xc0, 0x35, 0x98, 0x1b, 0x26,
-	0xd1, 0x6d, 0x96, 0xdf, 0x8e, 0xd3, 0x7b, 0x75, 0x41, 0x29, 0xdd, 0x49, 0x0f, 0xbf, 0x83, 0xa5,
-	0x76, 0x8e, 0x27, 0xd0, 0x59, 0x58, 0x9e, 0x77, 0x49, 0xaa, 0x0d, 0xd6, 0x60, 0x06, 0x45, 0xab,
-	0x7d, 0x3b, 0x97, 0xd3, 0xf6, 0x67, 0x49, 0x90, 0x1e, 0xfe, 0x84, 0x41, 0xb9, 0x48, 0x7c, 0xdd,
-	0x60, 0x0f, 0x52, 0xf0, 0x66, 0x97, 0xc5, 0xda, 0x66, 0x0b, 0xa3, 0x72, 0x81, 0xe5, 0x8e, 0x9f,
-	0xb5, 0x7f, 0x44, 0x5d, 0xf4, 0xde, 0x35, 0xc5, 0x47, 0x96, 0x4d, 0x7a, 0xbe, 0xf1, 0x77, 0xa0,
-	0xa9, 0xaf, 0x77, 0x01, 0x00, 0x00, 0xff, 0xff, 0xf1, 0x9d, 0xef, 0xf0, 0xc7, 0x03, 0x00, 0x00,
+	// 511 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x92, 0xcf, 0x6e, 0xda, 0x4e,
+	0x10, 0xc7, 0xb1, 0x8d, 0xf9, 0xc5, 0x83, 0xf5, 0x53, 0x19, 0x68, 0x6a, 0x39, 0x49, 0x8b, 0xf6,
+	0x04, 0x4a, 0xc4, 0x81, 0x3e, 0x41, 0x54, 0xda, 0x88, 0x43, 0x55, 0xe4, 0x3c, 0x40, 0xe4, 0xc6,
+	0xab, 0x60, 0xd5, 0x78, 0xdd, 0x78, 0x7d, 0xc8, 0xa9, 0x6f, 0xd2, 0x57, 0xe8, 0x0b, 0xf6, 0x50,
+	0xed, 0xd8, 0xe0, 0x35, 0x7f, 0x73, 0xc2, 0xb3, 0x33, 0x7c, 0xe7, 0x33, 0xf3, 0x1d, 0x80, 0x7c,
+	0x29, 0xb2, 0x49, 0xf6, 0x2c, 0xa4, 0xc0, 0x33, 0xfa, 0x79, 0x14, 0x09, 0xfb, 0x6d, 0x40, 0x37,
+	0xe0, 0x3f, 0x0b, 0x9e, 0xcb, 0xfb, 0xa5, 0xc8, 0xf0, 0x0a, 0x20, 0x5e, 0x85, 0x4f, 0xfc, 0x21,
+	0x0b, 0xe5, 0xd2, 0x33, 0x86, 0xc6, 0xc8, 0x09, 0x1c, 0x7a, 0x59, 0x84, 0x72, 0x89, 0x08, 0xed,
+	0x34, 0x5c, 0x71, 0xcf, 0xa4, 0x04, 0x7d, 0xa3, 0x0f, 0x67, 0x49, 0x28, 0x63, 0x59, 0x44, 0xdc,
+	0xb3, 0x86, 0xc6, 0xc8, 0x0c, 0x36, 0x31, 0x5e, 0x82, 0x93, 0x88, 0xf4, 0xa9, 0x4c, 0xb6, 0x29,
+	0x59, 0x3f, 0x20, 0x03, 0x37, 0x4e, 0xe5, 0xb3, 0x88, 0x8a, 0x47, 0x19, 0x8b, 0xd4, 0xb3, 0x49,
+	0xb5, 0xf1, 0xc6, 0xfe, 0x18, 0xe0, 0x06, 0x3c, 0xcf, 0x44, 0x9a, 0x73, 0x22, 0xfc, 0x1f, 0xcc,
+	0x38, 0x22, 0x32, 0x2b, 0x30, 0xe3, 0x68, 0x8b, 0xd8, 0x3c, 0x44, 0x6c, 0x1d, 0x20, 0x6e, 0x1f,
+	0x23, 0xb6, 0x4f, 0x11, 0x77, 0xf6, 0x10, 0x8f, 0xa1, 0x77, 0xc7, 0xe5, 0xd7, 0x17, 0x45, 0x9b,
+	0x57, 0xbb, 0xc5, 0x01, 0xd8, 0x52, 0xfc, 0xe0, 0x69, 0xb5, 0xd2, 0x32, 0x60, 0xb7, 0x80, 0x7a,
+	0x69, 0x39, 0x25, 0x5e, 0x83, 0xad, 0xbc, 0xca, 0x3d, 0x63, 0x68, 0x8d, 0xba, 0xd3, 0xb7, 0x93,
+	0xb5, 0x5b, 0x13, 0xcd, 0xa9, 0xa0, 0xac, 0x61, 0x2e, 0x00, 0xfd, 0xfb, 0xf3, 0x2a, 0x93, 0x2f,
+	0xec, 0x13, 0xf4, 0xef, 0xb8, 0xbc, 0x4d, 0x92, 0xa6, 0xe2, 0x4d, 0x53, 0xf1, 0x5c, 0x57, 0xac,
+	0x57, 0xbb, 0x96, 0xfc, 0x00, 0x8e, 0x0a, 0xe7, 0x6a, 0x87, 0x6a, 0x7f, 0x51, 0x28, 0x43, 0xe2,
+	0x76, 0x03, 0xfa, 0x66, 0xbf, 0xa0, 0xb7, 0x10, 0x79, 0xc5, 0x7d, 0x74, 0x42, 0x1c, 0x83, 0x4d,
+	0x5e, 0x90, 0x31, 0xdd, 0x69, 0xbf, 0xee, 0xbc, 0x69, 0x11, 0x94, 0x15, 0x38, 0x86, 0xb6, 0xea,
+	0x4f, 0x4e, 0x1d, 0x9c, 0x9a, 0x4a, 0xd8, 0x0d, 0xa0, 0x0e, 0x50, 0x4d, 0x79, 0x0e, 0x9d, 0x5c,
+	0x86, 0xb2, 0xc8, 0x2b, 0x84, 0x2a, 0x62, 0xf7, 0xf0, 0x66, 0x51, 0xbc, 0x92, 0xb6, 0x44, 0x30,
+	0x4f, 0x23, 0x5c, 0x43, 0x4f, 0x13, 0x3d, 0x41, 0x30, 0x83, 0xfe, 0x8c, 0x27, 0x5c, 0xf2, 0xd7,
+	0x40, 0xbc, 0x83, 0xff, 0x54, 0x87, 0x87, 0x38, 0x22, 0x0e, 0x2b, 0xe8, 0xa8, 0x70, 0x1e, 0xb1,
+	0x09, 0x0c, 0x9a, 0x2a, 0xc7, 0xbb, 0x4e, 0xff, 0x9a, 0x60, 0xd3, 0x1d, 0xe0, 0x1c, 0xa0, 0xbe,
+	0x33, 0xbc, 0xa8, 0xe7, 0xda, 0x39, 0x54, 0xff, 0x72, 0x7f, 0xb2, 0x6c, 0xc5, 0x5a, 0x38, 0x83,
+	0xae, 0x76, 0x61, 0x38, 0x68, 0x1a, 0x5a, 0x9e, 0xa1, 0x7f, 0xd5, 0x10, 0xd9, 0x3e, 0x47, 0xd6,
+	0x52, 0x40, 0xb5, 0x81, 0x3a, 0xd0, 0xce, 0x5d, 0xe9, 0x40, 0xbb, 0x9e, 0xb3, 0x16, 0x7e, 0x01,
+	0x67, 0x63, 0x04, 0xfa, 0x5a, 0xf1, 0x96, 0xe5, 0xfe, 0xc5, 0xde, 0xdc, 0x46, 0xe7, 0x1b, 0xb8,
+	0xfa, 0x76, 0x51, 0x9b, 0x61, 0x8f, 0x77, 0xfe, 0xfb, 0x43, 0xe9, 0xb5, 0xe0, 0xf7, 0x0e, 0x15,
+	0x7c, 0xfc, 0x17, 0x00, 0x00, 0xff, 0xff, 0x67, 0x3c, 0x9f, 0xa6, 0x79, 0x05, 0x00, 0x00,
 }

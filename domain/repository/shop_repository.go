@@ -7,9 +7,9 @@ import (
 
 // ShopRepository is Interface of Infrastructure Repository
 type ShopRepository interface {
-	FindMyShop(ctx context.Context, userAccessToken string) (*[]protocol.Shop, error)
-	FindAllShops(ctx context.Context) (*[]protocol.Shop, error)
-	AddMyShop(ctx context.Context, userAccessToken string, user protocol.Shop) error
-	UpdateMyShop(ctx context.Context, userAccessToken string, user protocol.Shop) error
-	DeleteMyShop(ctx context.Context, userAccessToken string, shopID uint) error
+	FindMyShop(ctx context.Context, token string) (*protocol.ResponseShop, error)
+	FindAllShops(ctx context.Context) ([]*protocol.ResponseShop, error)
+	AddMyShop(ctx context.Context, token string, s *protocol.RequestShop) error
+	UpdateMyShop(ctx context.Context, token string, s *protocol.RequestShop) error
+	DeleteMyShop(ctx context.Context, token string, sID int64) error
 }
