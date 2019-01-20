@@ -14,7 +14,7 @@ type User struct {
 	IsBuyer     bool
 	Password    []byte `gorm:"not null"`
 	AccessToken string
-	MyShops     []Shop   //直売所リスト
+	MyShop      Shop     //直売所リスト
 	BuyList     BuyList  //購入リスト
 	SellList    SellList //販売リスト
 }
