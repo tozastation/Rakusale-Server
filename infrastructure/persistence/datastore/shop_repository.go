@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/2018-miraikeitai-org/Rakusale-Another-Server/domain/model"
 	"github.com/2018-miraikeitai-org/Rakusale-Another-Server/domain/repository"
-	"github.com/2018-miraikeitai-org/Rakusale-Another-Server/interfaces/server/protocol"
+	ps "github.com/2018-miraikeitai-org/Rakusale-Another-Server/interfaces/server/rpc/shop"
 	"github.com/jinzhu/gorm"
 )
 
@@ -19,7 +19,7 @@ func NewShopRepository(Conn *gorm.DB) repository.ShopRepository {
 }
 
 // FindMyShop is
-func (r *ShopRepository) FindMyShop(ctx context.Context, token string) (*protocol.ResponseShop, error) {
+func (r *ShopRepository) FindMyShop(ctx context.Context, token string) (*ps.ResponseShop, error) {
 	user := model.User{}
 	// トークンに紐付く直売所を取得
 	if err := r.Conn.Find(&user, "access_token = ?", token).Related(&user.MyShop).Error; err != nil {
@@ -29,7 +29,7 @@ func (r *ShopRepository) FindMyShop(ctx context.Context, token string) (*protoco
 }
 
 // FindAllShops is
-func (r *ShopRepository) FindAllShops(ctx context.Context) ([]*protocol.ResponseShop, error) {
+func (r *ShopRepository) FindAllShops(ctx context.Context) ([]*ps.ResponseShop, error) {
 	a := []*model.Shop{}
 	if err := r.Conn.Limit(100).Find(&a).Error; err != nil {
 		return nil, err
@@ -38,7 +38,7 @@ func (r *ShopRepository) FindAllShops(ctx context.Context) ([]*protocol.Response
 }
 
 // AddMyShop is
-func (r *ShopRepository) AddMyShop(ctx context.Context, token string, s *protocol.RequestShop) error {
+func (r *ShopRepository) AddMyShop(ctx context.Context, token string, s *ps.RequestShop) error {
 	user := model.User{}
 	shop := ProtocolToShop(s)
 	// トークンに紐付く直売所を取得
@@ -53,7 +53,7 @@ func (r *ShopRepository) AddMyShop(ctx context.Context, token string, s *protoco
 }
 
 // UpdateMyShop is
-func (r *ShopRepository) UpdateMyShop(ctx context.Context, token string, s *protocol.RequestShop) error {
+func (r *ShopRepository) UpdateMyShop(ctx context.Context, token string, s *ps.RequestShop) error {
 	user := model.User{}
 	shop := model.Shop{}
 	// トークンに紐付く直売所を取得
@@ -100,8 +100,8 @@ func (r *ShopRepository) DeleteMyShop(ctx context.Context, token string, sID int
 }
 
 // SingleShopToProtocol is ...
-func SingleShopToProtocol(v model.Shop) *protocol.ResponseShop {
-	result := protocol.ResponseShop{
+func SingleShopToProtocol(v model.Shop) *ps.ResponseShop {
+	result := ps.ResponseShop{
 		Id:           v.ID,
 		Name:         v.Name,
 		Introduction: v.Introduction,
@@ -112,10 +112,10 @@ func SingleShopToProtocol(v model.Shop) *protocol.ResponseShop {
 }
 
 // ShopToProtocol is ...
-func ShopToProtocol(v []*model.Shop) []*protocol.ResponseShop {
-	result := []*protocol.ResponseShop{}
+func ShopToProtocol(v []*model.Shop) []*ps.ResponseShop {
+	result := []*ps.ResponseShop{}
 	for _, a := range v {
-		b := protocol.ResponseShop{
+		b := ps.ResponseShop{
 			Id:           a.ID,
 			Name:         a.Name,
 			Introduction: a.Introduction,
@@ -128,7 +128,7 @@ func ShopToProtocol(v []*model.Shop) []*protocol.ResponseShop {
 }
 
 // ProtocolToShop is ...
-func ProtocolToShop(v *protocol.RequestShop) model.Shop {
+func ProtocolToShop(v *ps.RequestShop) model.Shop {
 	result := model.Shop{
 		Name:         v.Name,
 		Introduction: v.Introduction,

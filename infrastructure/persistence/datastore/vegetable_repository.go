@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/2018-miraikeitai-org/Rakusale-Another-Server/domain/model"
 	"github.com/2018-miraikeitai-org/Rakusale-Another-Server/domain/repository"
-	"github.com/2018-miraikeitai-org/Rakusale-Another-Server/interfaces/server/protocol"
+	pv "github.com/2018-miraikeitai-org/Rakusale-Another-Server/interfaces/server/rpc/vegetable"
 	"github.com/jinzhu/gorm"
 )
 
@@ -19,7 +19,7 @@ func NewVegetableRepository(Conn *gorm.DB) repository.VegetableRepository {
 }
 
 // FindMyBoughtVegetables is ...
-func (r *VegetableRepository) FindMyBoughtVegetables(ctx context.Context, token string) ([]*protocol.Vegetable, error) {
+func (r *VegetableRepository) FindMyBoughtVegetables(ctx context.Context, token string) ([]*pv.Vegetable, error) {
 	user := model.User{}
 	buyList := model.BuyList{}
 	vegetables := []*model.Vegetable{}
@@ -44,7 +44,7 @@ func (r *VegetableRepository) FindMyBoughtVegetables(ctx context.Context, token 
 }
 
 // FindMySoldVegetables is ...
-func (r *VegetableRepository) FindMySoldVegetables(ctx context.Context, token string) ([]*protocol.Vegetable, error) {
+func (r *VegetableRepository) FindMySoldVegetables(ctx context.Context, token string) ([]*pv.Vegetable, error) {
 	user := model.User{}
 	sellList := model.SellList{}
 	vegetables := []*model.Vegetable{}
@@ -69,7 +69,7 @@ func (r *VegetableRepository) FindMySoldVegetables(ctx context.Context, token st
 }
 
 // FindAllVegetables is
-func (r *VegetableRepository) FindAllVegetables(ctx context.Context) ([]*protocol.Vegetable, error) {
+func (r *VegetableRepository) FindAllVegetables(ctx context.Context) ([]*pv.Vegetable, error) {
 	a := []*model.Vegetable{}
 	if err := r.Conn.Limit(100).Find(&a).Error; err != nil {
 		return nil, err
@@ -78,7 +78,7 @@ func (r *VegetableRepository) FindAllVegetables(ctx context.Context) ([]*protoco
 }
 
 // AddMyVegetable is
-func (r *VegetableRepository) AddMyVegetable(ctx context.Context, token string, v *protocol.Vegetable) error {
+func (r *VegetableRepository) AddMyVegetable(ctx context.Context, token string, v *pv.Vegetable) error {
 	user := model.User{}
 	shop := model.Shop{}
 	// トークンに紐付く直売所を取得
@@ -98,7 +98,7 @@ func (r *VegetableRepository) AddMyVegetable(ctx context.Context, token string, 
 }
 
 // UpdateMyVegetable is
-func (r *VegetableRepository) UpdateMyVegetable(ctx context.Context, token string, vID int64, v *protocol.Vegetable) error {
+func (r *VegetableRepository) UpdateMyVegetable(ctx context.Context, token string, vID int64, v *pv.Vegetable) error {
 	user := model.User{}
 	shop := model.Shop{}
 	vegetable := model.Vegetable{}
@@ -158,10 +158,10 @@ func (r *VegetableRepository) DeleteMyVegetable(ctx context.Context, token strin
 }
 
 // VegetableToProtocol is ...
-func VegetableToProtocol(v []*model.Vegetable) []*protocol.Vegetable {
-	result := []*protocol.Vegetable{}
+func VegetableToProtocol(v []*model.Vegetable) []*pv.Vegetable {
+	result := []*pv.Vegetable{}
 	for _, a := range v {
-		b := protocol.Vegetable{
+		b := pv.Vegetable{
 			Name:           a.Name,
 			Fee:            a.Fee,
 			ImagePath:      a.ImagePath,
@@ -174,7 +174,7 @@ func VegetableToProtocol(v []*model.Vegetable) []*protocol.Vegetable {
 }
 
 // ProtocolToVegetable is ...
-func ProtocolToVegetable(v *protocol.Vegetable) model.Vegetable {
+func ProtocolToVegetable(v *pv.Vegetable) model.Vegetable {
 	result := model.Vegetable{
 		Name:           v.Name,
 		Fee:            v.Fee,

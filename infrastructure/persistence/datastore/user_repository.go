@@ -5,7 +5,7 @@ import (
 	"github.com/2018-miraikeitai-org/Rakusale-Another-Server/domain/model"
 	"github.com/2018-miraikeitai-org/Rakusale-Another-Server/domain/repository"
 	"github.com/2018-miraikeitai-org/Rakusale-Another-Server/interfaces/server/auth"
-	"github.com/2018-miraikeitai-org/Rakusale-Another-Server/interfaces/server/protocol"
+	pu "github.com/2018-miraikeitai-org/Rakusale-Another-Server/interfaces/server/rpc/user"
 	"github.com/jinzhu/gorm"
 )
 
@@ -20,7 +20,7 @@ func NewUserRepository(Conn *gorm.DB) repository.UserRepository {
 }
 
 // FindMe is ...
-func (r *UserRepository) FindMe(ctx context.Context, token string) (*protocol.ResponseUser, error) {
+func (r *UserRepository) FindMe(ctx context.Context, token string) (*pu.ResponseUser, error) {
 	user := model.User{}
 	if err := r.Conn.Find(&user, "access_token = ?", token).Error; err != nil {
 		return nil, err
@@ -29,7 +29,7 @@ func (r *UserRepository) FindMe(ctx context.Context, token string) (*protocol.Re
 }
 
 // FindSingleUser is ...
-func (r *UserRepository) FindSingleUser(ctx context.Context, uID int64) (*protocol.ResponseUser, error) {
+func (r *UserRepository) FindSingleUser(ctx context.Context, uID int64) (*pu.ResponseUser, error) {
 	user := model.User{}
 	if err := r.Conn.Find(&user, uID).Error; err != nil {
 		return nil, err
@@ -38,7 +38,7 @@ func (r *UserRepository) FindSingleUser(ctx context.Context, uID int64) (*protoc
 }
 
 // FindAllUsers is
-func (r *UserRepository) FindAllUsers(ctx context.Context) ([]*protocol.ResponseUser, error) {
+func (r *UserRepository) FindAllUsers(ctx context.Context) ([]*pu.ResponseUser, error) {
 	user := []model.User{}
 	if err := r.Conn.Limit(100).Find(&user).Error; err != nil {
 		return nil, err
@@ -47,7 +47,7 @@ func (r *UserRepository) FindAllUsers(ctx context.Context) ([]*protocol.Response
 }
 
 // AddMe is
-func (r *UserRepository) AddMe(ctx context.Context, token string, u *protocol.RequestUser) error {
+func (r *UserRepository) AddMe(ctx context.Context, u *pu.RequestUser) error {
 	name := u.GetName()
 	email := u.GetEmail()
 	birthday := u.GetBirthday()
@@ -75,7 +75,7 @@ func (r *UserRepository) AddMe(ctx context.Context, token string, u *protocol.Re
 }
 
 // UpdateMe is
-func (r *UserRepository) UpdateMe(ctx context.Context, token string, u *protocol.RequestUser) error {
+func (r *UserRepository) UpdateMe(ctx context.Context, token string, u *pu.RequestUser) error {
 	user := model.User{}
 	if err := r.Conn.Find(&user, "access_token = ?", token).Error; err != nil {
 		return err
@@ -109,7 +109,7 @@ func (r *UserRepository) UpdateMe(ctx context.Context, token string, u *protocol
 }
 
 // DeleteMe is
-func (r *UserRepository) DeleteMe(ctx context.Context, token string, uID int64) error {
+func (r *UserRepository) DeleteMe(ctx context.Context, token string) error {
 	user := model.User{}
 	if err := r.Conn.Delete(&user, "access_token = ?", token).Error; err != nil {
 		return err
@@ -118,8 +118,8 @@ func (r *UserRepository) DeleteMe(ctx context.Context, token string, uID int64) 
 }
 
 // SingleUserToProtocol is ...
-func SingleUserToProtocol(u model.User) *protocol.ResponseUser {
-	result := protocol.ResponseUser{
+func SingleUserToProtocol(u model.User) *pu.ResponseUser {
+	result := pu.ResponseUser{
 		Id:       u.ID,
 		Name:     u.Name,
 		Email:    u.Email,
@@ -131,10 +131,10 @@ func SingleUserToProtocol(u model.User) *protocol.ResponseUser {
 }
 
 // UserToProtocol is ...
-func UserToProtocol(u []model.User) []*protocol.ResponseUser {
-	result := []*protocol.ResponseUser{}
+func UserToProtocol(u []model.User) []*pu.ResponseUser {
+	result := []*pu.ResponseUser{}
 	for _, a := range u {
-		b := protocol.ResponseUser{
+		b := pu.ResponseUser{
 			Id:       a.ID,
 			Name:     a.Name,
 			Email:    a.Email,
@@ -148,7 +148,7 @@ func UserToProtocol(u []model.User) []*protocol.ResponseUser {
 }
 
 // ProtocolToUser is ...
-func ProtocolToUser(u *protocol.RequestUser) model.User {
+func ProtocolToUser(u *pu.RequestUser) model.User {
 	result := model.User{
 		Name:     u.Name,
 		Email:    u.Email,

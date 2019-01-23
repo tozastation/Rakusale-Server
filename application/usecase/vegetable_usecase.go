@@ -3,17 +3,18 @@ package usecase
 import (
 	"context"
 	"github.com/2018-miraikeitai-org/Rakusale-Another-Server/domain/repository"
-	pb "github.com/2018-miraikeitai-org/Rakusale-Another-Server/interfaces/server/protocol"
+	pv "github.com/2018-miraikeitai-org/Rakusale-Another-Server/interfaces/server/rpc/vegetable"
 	"net/http"
 )
 
 // VegetableUseCase is ...
 type VegetableUseCase interface {
-	GetMyVegetables(ctx context.Context, p *pb.GetMyVegetablesRequest) *pb.GetMyVegetablesResponse
-	GetAllVegetables(ctx context.Context) *pb.GetAllVegetablesResponse
-	PostMyVegetable(ctx context.Context, p *pb.PostMeRequest) *pb.PostMeResponse
-	PutMyVegetable(ctx context.Context, p *pb.PutMyVegetableRequest) *pb.PutMyVegetableResponse
-	DeleteMyVegetable(ctx context.Context, p *pb.DeleteMyVegetableRequest) *pb.DeleteMyVegetableResponse
+	GetMyBoughtVegetables(ctx context.Context, p *pv.GetMyVegetablesRequest) *pv.GetMyVegetablesResponse
+	GetMySoldVegetables(ctx context.Context, p *pv.GetMyVegetablesRequest) *pv.GetMyVegetablesResponse
+	GetAllVegetables(ctx context.Context) *pv.GetAllVegetablesResponse
+	PostMyVegetable(ctx context.Context, p *pv.PostMyVegetableRequest) *pv.PostMyVegetableResponse
+	PutMyVegetable(ctx context.Context, p *pv.PutMyVegetableRequest) *pv.PutMyVegetableResponse
+	DeleteMyVegetable(ctx context.Context, p *pv.DeleteMyVegetableRequest) *pv.DeleteMyVegetableResponse
 }
 
 type vegetableUseCase struct {
@@ -25,10 +26,10 @@ func NewVegetableUseCase(r repository.VegetableRepository) VegetableUseCase {
 	return &vegetableUseCase{r}
 }
 
-func (u *vegetableUseCase) GetMyVegetables(ctx context.Context, p *pb.GetMyVegetablesRequest) *pb.GetMyVegetablesResponse {
-	res := pb.GetMyVegetablesResponse{}
+func (u *vegetableUseCase) GetMyBoughtVegetables(ctx context.Context, p *pv.GetMyVegetablesRequest) *pv.GetMyVegetablesResponse {
+	res := pv.GetMyVegetablesResponse{}
 	token := p.GetToken()
-	vegetables, err := u.VegetableRepository.FindMyVegetables(ctx, token)
+	vegetables, err := u.VegetableRepository.FindMyBoughtVegetables(ctx, token)
 	if err != nil {
 		res.Status = http.StatusNoContent
 		return &res
@@ -38,8 +39,21 @@ func (u *vegetableUseCase) GetMyVegetables(ctx context.Context, p *pb.GetMyVeget
 	return &res
 }
 
-func (u *vegetableUseCase) GetAllVegetables(ctx context.Context) *pb.GetAllVegetablesResponse {
-	res := pb.GetAllVegetablesResponse{}
+func (u *vegetableUseCase) GetMySoldVegetables(ctx context.Context, p *pv.GetMyVegetablesRequest) *pv.GetMyVegetablesResponse {
+	res := pv.GetMyVegetablesResponse{}
+	token := p.GetToken()
+	vegetables, err := u.VegetableRepository.FindMySoldVegetables(ctx, token)
+	if err != nil {
+		res.Status = http.StatusNoContent
+		return &res
+	}
+	res.Vegetables = vegetables
+	res.Status = http.StatusOK
+	return &res
+}
+
+func (u *vegetableUseCase) GetAllVegetables(ctx context.Context) *pv.GetAllVegetablesResponse {
+	res := pv.GetAllVegetablesResponse{}
 	vegetables, err := u.VegetableRepository.FindAllVegetables(ctx)
 	if err != nil {
 		res.Status = http.StatusNoContent
@@ -50,8 +64,8 @@ func (u *vegetableUseCase) GetAllVegetables(ctx context.Context) *pb.GetAllVeget
 	return &res
 }
 
-func (u *vegetableUseCase) PostMyVegetable(ctx context.Context, p *pb.PostMyVegetableRequest) *pb.PostMyVegetableResponse {
-	res := pb.PostMyVegetableResponse{}
+func (u *vegetableUseCase) PostMyVegetable(ctx context.Context, p *pv.PostMyVegetableRequest) *pv.PostMyVegetableResponse {
+	res := pv.PostMyVegetableResponse{}
 	token := p.GetToken()
 	vegetable := p.GetVegetable()
 	err := u.VegetableRepository.AddMyVegetable(ctx, token, vegetable)
@@ -63,11 +77,9 @@ func (u *vegetableUseCase) PostMyVegetable(ctx context.Context, p *pb.PostMyVege
 	return &res
 }
 
-func (u *vegetableUseCase) PutMyVegetable(ctx context.Context, p *pb.PutMyVegetableRequest) *pb.PutMyVegetableResponse {
-	res := pb.PutMyVegetableResponse{}
-	token := p.GetToken()
-	vegetable := p.GetVegetable()
-	err := u.VegetableRepository.UpdateMyVegetable(ctx, token, vegetable)
+func (u *vegetableUseCase) PutMyVegetable(ctx context.Context, p *pv.PutMyVegetableRequest) *pv.PutMyVegetableResponse {
+	res := pv.PutMyVegetableResponse{}
+	err := u.VegetableRepository.UpdateMyVegetable(ctx, p.GetToken(), p.GetVId(), p.GetVegetable())
 	if err != nil {
 		res.Status = http.StatusBadRequest
 		return &res
@@ -76,11 +88,9 @@ func (u *vegetableUseCase) PutMyVegetable(ctx context.Context, p *pb.PutMyVegeta
 	return &res
 }
 
-func (u *vegetableUseCase) DeleteMyVegetable(ctx context.Context, p *pb.DeleteMyVegetableRequest) *pb.DeleteMyVegetableResponse {
-	res := pb.DeleteMyVegetableResponse{}
-	token := p.GetToken()
-	id := p.GetVegetableId()
-	err := u.VegetableRepository.DeleteMyVegetable(ctx, token, id)
+func (u *vegetableUseCase) DeleteMyVegetable(ctx context.Context, p *pv.DeleteMyVegetableRequest) *pv.DeleteMyVegetableResponse {
+	res := pv.DeleteMyVegetableResponse{}
+	err := u.VegetableRepository.DeleteMyVegetable(ctx, p.GetToken(), p.GetVId())
 	if err != nil {
 		res.Status = http.StatusBadRequest
 		return &res
