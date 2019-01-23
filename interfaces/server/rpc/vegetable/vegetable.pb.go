@@ -4,8 +4,10 @@
 package vegetable
 
 import (
+	context "context"
 	fmt "fmt"
 	proto "github.com/golang/protobuf/proto"
+	grpc "google.golang.org/grpc"
 	math "math"
 )
 
@@ -628,4 +630,241 @@ var fileDescriptor_50c7ebee713ee9ad = []byte{
 	0x0e, 0xcf, 0x30, 0x9d, 0x62, 0x6a, 0xf3, 0x58, 0x61, 0x7a, 0xcd, 0x5c, 0x94, 0xb6, 0x9c, 0x45,
 	0xd2, 0xc4, 0xb5, 0x73, 0xda, 0xab, 0x45, 0xfd, 0xbf, 0xd9, 0xfb, 0x1d, 0x00, 0x00, 0xff, 0xff,
 	0x1f, 0xd7, 0x15, 0x37, 0x82, 0x06, 0x00, 0x00,
+}
+
+// Reference imports to suppress errors if they are not otherwise used.
+var _ context.Context
+var _ grpc.ClientConn
+
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the grpc package it is being compiled against.
+const _ = grpc.SupportPackageIsVersion4
+
+// VegetablesClient is the client API for Vegetables service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+type VegetablesClient interface {
+	GetMyBoughtVegetables(ctx context.Context, in *GetMyVegetablesRequest, opts ...grpc.CallOption) (*GetMyVegetablesResponse, error)
+	GetMySoldVegetables(ctx context.Context, in *GetMyVegetablesRequest, opts ...grpc.CallOption) (*GetMyVegetablesResponse, error)
+	GetAllVegetables(ctx context.Context, in *VegetablesEmpty, opts ...grpc.CallOption) (*GetAllVegetablesResponse, error)
+	PostMyVegetable(ctx context.Context, in *PostMyVegetableRequest, opts ...grpc.CallOption) (*PostMyVegetableResponse, error)
+	PutMyVegetable(ctx context.Context, in *PutMyVegetableRequest, opts ...grpc.CallOption) (*PutMyVegetableResponse, error)
+	DeleteMyVegetable(ctx context.Context, in *DeleteMyVegetableRequest, opts ...grpc.CallOption) (*DeleteMyVegetableResponse, error)
+}
+
+type vegetablesClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewVegetablesClient(cc *grpc.ClientConn) VegetablesClient {
+	return &vegetablesClient{cc}
+}
+
+func (c *vegetablesClient) GetMyBoughtVegetables(ctx context.Context, in *GetMyVegetablesRequest, opts ...grpc.CallOption) (*GetMyVegetablesResponse, error) {
+	out := new(GetMyVegetablesResponse)
+	err := c.cc.Invoke(ctx, "/vegetable.Vegetables/GetMyBoughtVegetables", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *vegetablesClient) GetMySoldVegetables(ctx context.Context, in *GetMyVegetablesRequest, opts ...grpc.CallOption) (*GetMyVegetablesResponse, error) {
+	out := new(GetMyVegetablesResponse)
+	err := c.cc.Invoke(ctx, "/vegetable.Vegetables/GetMySoldVegetables", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *vegetablesClient) GetAllVegetables(ctx context.Context, in *VegetablesEmpty, opts ...grpc.CallOption) (*GetAllVegetablesResponse, error) {
+	out := new(GetAllVegetablesResponse)
+	err := c.cc.Invoke(ctx, "/vegetable.Vegetables/GetAllVegetables", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *vegetablesClient) PostMyVegetable(ctx context.Context, in *PostMyVegetableRequest, opts ...grpc.CallOption) (*PostMyVegetableResponse, error) {
+	out := new(PostMyVegetableResponse)
+	err := c.cc.Invoke(ctx, "/vegetable.Vegetables/PostMyVegetable", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *vegetablesClient) PutMyVegetable(ctx context.Context, in *PutMyVegetableRequest, opts ...grpc.CallOption) (*PutMyVegetableResponse, error) {
+	out := new(PutMyVegetableResponse)
+	err := c.cc.Invoke(ctx, "/vegetable.Vegetables/PutMyVegetable", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *vegetablesClient) DeleteMyVegetable(ctx context.Context, in *DeleteMyVegetableRequest, opts ...grpc.CallOption) (*DeleteMyVegetableResponse, error) {
+	out := new(DeleteMyVegetableResponse)
+	err := c.cc.Invoke(ctx, "/vegetable.Vegetables/DeleteMyVegetable", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// VegetablesServer is the server API for Vegetables service.
+type VegetablesServer interface {
+	GetMyBoughtVegetables(context.Context, *GetMyVegetablesRequest) (*GetMyVegetablesResponse, error)
+	GetMySoldVegetables(context.Context, *GetMyVegetablesRequest) (*GetMyVegetablesResponse, error)
+	GetAllVegetables(context.Context, *VegetablesEmpty) (*GetAllVegetablesResponse, error)
+	PostMyVegetable(context.Context, *PostMyVegetableRequest) (*PostMyVegetableResponse, error)
+	PutMyVegetable(context.Context, *PutMyVegetableRequest) (*PutMyVegetableResponse, error)
+	DeleteMyVegetable(context.Context, *DeleteMyVegetableRequest) (*DeleteMyVegetableResponse, error)
+}
+
+func RegisterVegetablesServer(s *grpc.Server, srv VegetablesServer) {
+	s.RegisterService(&_Vegetables_serviceDesc, srv)
+}
+
+func _Vegetables_GetMyBoughtVegetables_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMyVegetablesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(VegetablesServer).GetMyBoughtVegetables(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/vegetable.Vegetables/GetMyBoughtVegetables",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(VegetablesServer).GetMyBoughtVegetables(ctx, req.(*GetMyVegetablesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Vegetables_GetMySoldVegetables_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMyVegetablesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(VegetablesServer).GetMySoldVegetables(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/vegetable.Vegetables/GetMySoldVegetables",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(VegetablesServer).GetMySoldVegetables(ctx, req.(*GetMyVegetablesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Vegetables_GetAllVegetables_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(VegetablesEmpty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(VegetablesServer).GetAllVegetables(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/vegetable.Vegetables/GetAllVegetables",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(VegetablesServer).GetAllVegetables(ctx, req.(*VegetablesEmpty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Vegetables_PostMyVegetable_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PostMyVegetableRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(VegetablesServer).PostMyVegetable(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/vegetable.Vegetables/PostMyVegetable",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(VegetablesServer).PostMyVegetable(ctx, req.(*PostMyVegetableRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Vegetables_PutMyVegetable_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PutMyVegetableRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(VegetablesServer).PutMyVegetable(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/vegetable.Vegetables/PutMyVegetable",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(VegetablesServer).PutMyVegetable(ctx, req.(*PutMyVegetableRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Vegetables_DeleteMyVegetable_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteMyVegetableRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(VegetablesServer).DeleteMyVegetable(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/vegetable.Vegetables/DeleteMyVegetable",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(VegetablesServer).DeleteMyVegetable(ctx, req.(*DeleteMyVegetableRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _Vegetables_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "vegetable.Vegetables",
+	HandlerType: (*VegetablesServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetMyBoughtVegetables",
+			Handler:    _Vegetables_GetMyBoughtVegetables_Handler,
+		},
+		{
+			MethodName: "GetMySoldVegetables",
+			Handler:    _Vegetables_GetMySoldVegetables_Handler,
+		},
+		{
+			MethodName: "GetAllVegetables",
+			Handler:    _Vegetables_GetAllVegetables_Handler,
+		},
+		{
+			MethodName: "PostMyVegetable",
+			Handler:    _Vegetables_PostMyVegetable_Handler,
+		},
+		{
+			MethodName: "PutMyVegetable",
+			Handler:    _Vegetables_PutMyVegetable_Handler,
+		},
+		{
+			MethodName: "DeleteMyVegetable",
+			Handler:    _Vegetables_DeleteMyVegetable_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "vegetable.proto",
 }

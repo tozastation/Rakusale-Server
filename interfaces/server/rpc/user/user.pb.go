@@ -4,8 +4,10 @@
 package user
 
 import (
+	context "context"
 	fmt "fmt"
 	proto "github.com/golang/protobuf/proto"
+	grpc "google.golang.org/grpc"
 	math "math"
 )
 
@@ -790,4 +792,241 @@ var fileDescriptor_116e343673f7ffaf = []byte{
 	0xe7, 0x20, 0xcd, 0xd4, 0x25, 0x8a, 0xce, 0x29, 0x8a, 0xef, 0x28, 0xba, 0x3c, 0x55, 0x28, 0xbe,
 	0xb2, 0x0b, 0x94, 0x5d, 0x69, 0x33, 0x62, 0x74, 0xd1, 0xd5, 0x0f, 0xf5, 0x9b, 0xe6, 0x57, 0xf0,
 	0xf4, 0x4f, 0x00, 0x00, 0x00, 0xff, 0xff, 0x5a, 0x79, 0xee, 0xd4, 0x18, 0x06, 0x00, 0x00,
+}
+
+// Reference imports to suppress errors if they are not otherwise used.
+var _ context.Context
+var _ grpc.ClientConn
+
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the grpc package it is being compiled against.
+const _ = grpc.SupportPackageIsVersion4
+
+// UsersClient is the client API for Users service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+type UsersClient interface {
+	GetMe(ctx context.Context, in *GetMeRequest, opts ...grpc.CallOption) (*GetMeResponse, error)
+	GetSingleUser(ctx context.Context, in *GetSingleUserRequest, opts ...grpc.CallOption) (*GetSingleUserResponse, error)
+	GetAllUsers(ctx context.Context, in *UsersEmpty, opts ...grpc.CallOption) (*GetAllUsersResponse, error)
+	PostMe(ctx context.Context, in *PostMeRequest, opts ...grpc.CallOption) (*PostMeResponse, error)
+	PutMe(ctx context.Context, in *PutMeRequest, opts ...grpc.CallOption) (*PutMeResponse, error)
+	DeleteMe(ctx context.Context, in *DeleteMeRequest, opts ...grpc.CallOption) (*DeleteMeResponse, error)
+}
+
+type usersClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewUsersClient(cc *grpc.ClientConn) UsersClient {
+	return &usersClient{cc}
+}
+
+func (c *usersClient) GetMe(ctx context.Context, in *GetMeRequest, opts ...grpc.CallOption) (*GetMeResponse, error) {
+	out := new(GetMeResponse)
+	err := c.cc.Invoke(ctx, "/user.Users/GetMe", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *usersClient) GetSingleUser(ctx context.Context, in *GetSingleUserRequest, opts ...grpc.CallOption) (*GetSingleUserResponse, error) {
+	out := new(GetSingleUserResponse)
+	err := c.cc.Invoke(ctx, "/user.Users/GetSingleUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *usersClient) GetAllUsers(ctx context.Context, in *UsersEmpty, opts ...grpc.CallOption) (*GetAllUsersResponse, error) {
+	out := new(GetAllUsersResponse)
+	err := c.cc.Invoke(ctx, "/user.Users/GetAllUsers", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *usersClient) PostMe(ctx context.Context, in *PostMeRequest, opts ...grpc.CallOption) (*PostMeResponse, error) {
+	out := new(PostMeResponse)
+	err := c.cc.Invoke(ctx, "/user.Users/PostMe", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *usersClient) PutMe(ctx context.Context, in *PutMeRequest, opts ...grpc.CallOption) (*PutMeResponse, error) {
+	out := new(PutMeResponse)
+	err := c.cc.Invoke(ctx, "/user.Users/PutMe", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *usersClient) DeleteMe(ctx context.Context, in *DeleteMeRequest, opts ...grpc.CallOption) (*DeleteMeResponse, error) {
+	out := new(DeleteMeResponse)
+	err := c.cc.Invoke(ctx, "/user.Users/DeleteMe", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// UsersServer is the server API for Users service.
+type UsersServer interface {
+	GetMe(context.Context, *GetMeRequest) (*GetMeResponse, error)
+	GetSingleUser(context.Context, *GetSingleUserRequest) (*GetSingleUserResponse, error)
+	GetAllUsers(context.Context, *UsersEmpty) (*GetAllUsersResponse, error)
+	PostMe(context.Context, *PostMeRequest) (*PostMeResponse, error)
+	PutMe(context.Context, *PutMeRequest) (*PutMeResponse, error)
+	DeleteMe(context.Context, *DeleteMeRequest) (*DeleteMeResponse, error)
+}
+
+func RegisterUsersServer(s *grpc.Server, srv UsersServer) {
+	s.RegisterService(&_Users_serviceDesc, srv)
+}
+
+func _Users_GetMe_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UsersServer).GetMe(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.Users/GetMe",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UsersServer).GetMe(ctx, req.(*GetMeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Users_GetSingleUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetSingleUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UsersServer).GetSingleUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.Users/GetSingleUser",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UsersServer).GetSingleUser(ctx, req.(*GetSingleUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Users_GetAllUsers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UsersEmpty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UsersServer).GetAllUsers(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.Users/GetAllUsers",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UsersServer).GetAllUsers(ctx, req.(*UsersEmpty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Users_PostMe_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PostMeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UsersServer).PostMe(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.Users/PostMe",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UsersServer).PostMe(ctx, req.(*PostMeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Users_PutMe_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PutMeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UsersServer).PutMe(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.Users/PutMe",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UsersServer).PutMe(ctx, req.(*PutMeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Users_DeleteMe_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteMeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UsersServer).DeleteMe(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.Users/DeleteMe",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UsersServer).DeleteMe(ctx, req.(*DeleteMeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _Users_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "user.Users",
+	HandlerType: (*UsersServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetMe",
+			Handler:    _Users_GetMe_Handler,
+		},
+		{
+			MethodName: "GetSingleUser",
+			Handler:    _Users_GetSingleUser_Handler,
+		},
+		{
+			MethodName: "GetAllUsers",
+			Handler:    _Users_GetAllUsers_Handler,
+		},
+		{
+			MethodName: "PostMe",
+			Handler:    _Users_PostMe_Handler,
+		},
+		{
+			MethodName: "PutMe",
+			Handler:    _Users_PutMe_Handler,
+		},
+		{
+			MethodName: "DeleteMe",
+			Handler:    _Users_DeleteMe_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "user.proto",
 }

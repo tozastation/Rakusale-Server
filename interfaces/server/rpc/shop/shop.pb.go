@@ -4,8 +4,10 @@
 package shop
 
 import (
+	context "context"
 	fmt "fmt"
 	proto "github.com/golang/protobuf/proto"
+	grpc "google.golang.org/grpc"
 	math "math"
 )
 
@@ -699,4 +701,208 @@ var fileDescriptor_0f3030369b20fd61 = []byte{
 	0xdd, 0x61, 0x20, 0x94, 0xc7, 0xa2, 0xee, 0x84, 0x45, 0xbf, 0x58, 0xd4, 0xe7, 0x81, 0x62, 0xd1,
 	0x0f, 0x3a, 0x65, 0xb2, 0x2f, 0xd3, 0x4e, 0x14, 0x4e, 0xfb, 0x09, 0xd9, 0x4d, 0x55, 0xff, 0x59,
 	0xbf, 0xfe, 0x1f, 0x00, 0x00, 0xff, 0xff, 0xd9, 0x59, 0x0d, 0xce, 0xba, 0x05, 0x00, 0x00,
+}
+
+// Reference imports to suppress errors if they are not otherwise used.
+var _ context.Context
+var _ grpc.ClientConn
+
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the grpc package it is being compiled against.
+const _ = grpc.SupportPackageIsVersion4
+
+// ShopsClient is the client API for Shops service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+type ShopsClient interface {
+	GetMyShops(ctx context.Context, in *GetMyShopRequest, opts ...grpc.CallOption) (*GetMyShopResponse, error)
+	GetAllShops(ctx context.Context, in *ShopsEmpty, opts ...grpc.CallOption) (*GetAllShopsResponse, error)
+	PostMyShop(ctx context.Context, in *PostMyShopRequest, opts ...grpc.CallOption) (*PostMyShopResponse, error)
+	PutMyShop(ctx context.Context, in *PutMyShopRequest, opts ...grpc.CallOption) (*PutMyShopResponse, error)
+	DeleteMyShop(ctx context.Context, in *DeleteMyShopRequest, opts ...grpc.CallOption) (*DeleteMyShopResponse, error)
+}
+
+type shopsClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewShopsClient(cc *grpc.ClientConn) ShopsClient {
+	return &shopsClient{cc}
+}
+
+func (c *shopsClient) GetMyShops(ctx context.Context, in *GetMyShopRequest, opts ...grpc.CallOption) (*GetMyShopResponse, error) {
+	out := new(GetMyShopResponse)
+	err := c.cc.Invoke(ctx, "/shop.Shops/GetMyShops", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shopsClient) GetAllShops(ctx context.Context, in *ShopsEmpty, opts ...grpc.CallOption) (*GetAllShopsResponse, error) {
+	out := new(GetAllShopsResponse)
+	err := c.cc.Invoke(ctx, "/shop.Shops/GetAllShops", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shopsClient) PostMyShop(ctx context.Context, in *PostMyShopRequest, opts ...grpc.CallOption) (*PostMyShopResponse, error) {
+	out := new(PostMyShopResponse)
+	err := c.cc.Invoke(ctx, "/shop.Shops/PostMyShop", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shopsClient) PutMyShop(ctx context.Context, in *PutMyShopRequest, opts ...grpc.CallOption) (*PutMyShopResponse, error) {
+	out := new(PutMyShopResponse)
+	err := c.cc.Invoke(ctx, "/shop.Shops/PutMyShop", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shopsClient) DeleteMyShop(ctx context.Context, in *DeleteMyShopRequest, opts ...grpc.CallOption) (*DeleteMyShopResponse, error) {
+	out := new(DeleteMyShopResponse)
+	err := c.cc.Invoke(ctx, "/shop.Shops/DeleteMyShop", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// ShopsServer is the server API for Shops service.
+type ShopsServer interface {
+	GetMyShops(context.Context, *GetMyShopRequest) (*GetMyShopResponse, error)
+	GetAllShops(context.Context, *ShopsEmpty) (*GetAllShopsResponse, error)
+	PostMyShop(context.Context, *PostMyShopRequest) (*PostMyShopResponse, error)
+	PutMyShop(context.Context, *PutMyShopRequest) (*PutMyShopResponse, error)
+	DeleteMyShop(context.Context, *DeleteMyShopRequest) (*DeleteMyShopResponse, error)
+}
+
+func RegisterShopsServer(s *grpc.Server, srv ShopsServer) {
+	s.RegisterService(&_Shops_serviceDesc, srv)
+}
+
+func _Shops_GetMyShops_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMyShopRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShopsServer).GetMyShops(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/shop.Shops/GetMyShops",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShopsServer).GetMyShops(ctx, req.(*GetMyShopRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Shops_GetAllShops_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ShopsEmpty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShopsServer).GetAllShops(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/shop.Shops/GetAllShops",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShopsServer).GetAllShops(ctx, req.(*ShopsEmpty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Shops_PostMyShop_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PostMyShopRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShopsServer).PostMyShop(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/shop.Shops/PostMyShop",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShopsServer).PostMyShop(ctx, req.(*PostMyShopRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Shops_PutMyShop_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PutMyShopRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShopsServer).PutMyShop(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/shop.Shops/PutMyShop",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShopsServer).PutMyShop(ctx, req.(*PutMyShopRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Shops_DeleteMyShop_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteMyShopRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShopsServer).DeleteMyShop(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/shop.Shops/DeleteMyShop",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShopsServer).DeleteMyShop(ctx, req.(*DeleteMyShopRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _Shops_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "shop.Shops",
+	HandlerType: (*ShopsServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetMyShops",
+			Handler:    _Shops_GetMyShops_Handler,
+		},
+		{
+			MethodName: "GetAllShops",
+			Handler:    _Shops_GetAllShops_Handler,
+		},
+		{
+			MethodName: "PostMyShop",
+			Handler:    _Shops_PostMyShop_Handler,
+		},
+		{
+			MethodName: "PutMyShop",
+			Handler:    _Shops_PutMyShop_Handler,
+		},
+		{
+			MethodName: "DeleteMyShop",
+			Handler:    _Shops_DeleteMyShop_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "shop.proto",
 }
