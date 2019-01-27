@@ -9,3 +9,10 @@ services:
         MYSQL_DATABASE: rakusale
     ports: 
       - "3306:3306"
+  grpc:
+    build: .
+    stdin_open: true
+    tty: true
+    ports:
+      - "3001:3001"
+      - "3002:3002"

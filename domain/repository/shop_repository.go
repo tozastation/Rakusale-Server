@@ -9,7 +9,7 @@ import (
 type ShopRepository interface {
 	FindMyShop(ctx context.Context, token string) (*ps.ResponseShop, error)
 	FindAllShops(ctx context.Context) ([]*ps.ResponseShop, error)
-	AddMyShop(ctx context.Context, token string, s *ps.RequestShop) error
-	UpdateMyShop(ctx context.Context, token string, s *ps.RequestShop) error
+	AddMyShop(ctx context.Context, token string, p *ps.PostMyShopRequest) error
+	UpdateMyShop(ctx context.Context, token string, p *ps.RequestShop) error
 	DeleteMyShop(ctx context.Context, token string, sID int64) error
 }

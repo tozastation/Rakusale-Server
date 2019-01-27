@@ -9,12 +9,12 @@ import (
 
 // UserUseCase is RPC
 type UserUseCase interface {
-	GetMe(ctx context.Context, p *pu.GetMeRequest) *pu.GetMeResponse
-	GetSingleUser(ctx context.Context, p *pu.GetSingleUserRequest) *pu.GetSingleUserResponse
-	GetAllUsers(ctx context.Context) *pu.GetAllUsersResponse
-	PostMe(ctx context.Context, p *pu.PostMeRequest) *pu.PostMeResponse
-	PutMe(ctx context.Context, p *pu.PutMeRequest) *pu.PutMeResponse
-	DeleteMe(ctx context.Context, p *pu.DeleteMeRequest) *pu.DeleteMeResponse
+	GetMe(ctx context.Context, p *pu.GetMeRequest) (*pu.GetMeResponse, error)
+	GetSingleUser(ctx context.Context, p *pu.GetSingleUserRequest) (*pu.GetSingleUserResponse, error)
+	GetAllUsers(ctx context.Context, p *pu.UsersEmpty) (*pu.GetAllUsersResponse, error)
+	PostMe(ctx context.Context, p *pu.PostMeRequest) (*pu.PostMeResponse, error)
+	PutMe(ctx context.Context, p *pu.PutMeRequest) (*pu.PutMeResponse, error)
+	DeleteMe(ctx context.Context, p *pu.DeleteMeRequest) (*pu.DeleteMeResponse, error)
 }
 
 type userUseCase struct {
@@ -26,83 +26,83 @@ func NewUserUseCase(r repository.UserRepository) UserUseCase {
 	return &userUseCase{r}
 }
 
-func (u *userUseCase) GetMe(ctx context.Context, message *pu.GetMeRequest) *pu.GetMeResponse {
+func (u *userUseCase) GetMe(ctx context.Context, message *pu.GetMeRequest) (*pu.GetMeResponse, error) {
 	res := pu.GetMeResponse{}
 	user, err := u.UserRepository.FindMe(ctx, message.GetToken())
 	if err != nil {
 		if err != nil {
 			res.Status = http.StatusBadRequest
-			return &res
+			return &res, nil
 		}
 	}
 	res.User = user
 	res.Status = http.StatusOK
-	return &res
+	return &res, nil
 }
 
-func (u *userUseCase) GetSingleUser(ctx context.Context, p *pu.GetSingleUserRequest) *pu.GetSingleUserResponse {
+func (u *userUseCase) GetSingleUser(ctx context.Context, p *pu.GetSingleUserRequest) (*pu.GetSingleUserResponse, error) {
 	res := pu.GetSingleUserResponse{}
 	user, err := u.UserRepository.FindSingleUser(ctx, p.GetUserId())
 	if err != nil {
 		if err != nil {
 			res.Status = http.StatusBadRequest
-			return &res
+			return &res, nil
 		}
 	}
 	res.User = user
 	res.Status = http.StatusOK
-	return &res
+	return &res, nil
 }
 
-func (u *userUseCase) GetAllUsers(ctx context.Context) *pu.GetAllUsersResponse {
+func (u *userUseCase) GetAllUsers(ctx context.Context, p *pu.UsersEmpty) (*pu.GetAllUsersResponse, error) {
 	res := pu.GetAllUsersResponse{}
 	users, err := u.UserRepository.FindAllUsers(ctx)
 	if err != nil {
 		if err != nil {
 			res.Status = http.StatusBadRequest
-			return &res
+			return &res, nil
 		}
 	}
 	res.Users = users
 	res.Status = http.StatusOK
-	return &res
+	return &res, nil
 }
 
-func (u *userUseCase) PostMe(ctx context.Context, p *pu.PostMeRequest) *pu.PostMeResponse {
+func (u *userUseCase) PostMe(ctx context.Context, p *pu.PostMeRequest) (*pu.PostMeResponse, error) {
 	res := pu.PostMeResponse{}
 	err := u.UserRepository.AddMe(ctx, p.GetUser())
 	if err != nil {
 		if err != nil {
 			res.Status = http.StatusBadRequest
-			return &res
+			return &res, nil
 		}
 	}
 	res.Status = http.StatusCreated
-	return &res
+	return &res, nil
 }
 
-func (u *userUseCase) PutMe(ctx context.Context, p *pu.PutMeRequest) *pu.PutMeResponse {
+func (u *userUseCase) PutMe(ctx context.Context, p *pu.PutMeRequest) (*pu.PutMeResponse, error) {
 	res := pu.PutMeResponse{}
 	err := u.UserRepository.UpdateMe(ctx, p.GetToken(), p.GetUser())
 	if err != nil {
 		if err != nil {
 			res.Status = http.StatusBadRequest
-			return &res
+			return &res, nil
 		}
 	}
 	res.Status = http.StatusCreated
-	return &res
+	return &res, nil
 }
 
-func (u *userUseCase) DeleteMe(ctx context.Context, p *pu.DeleteMeRequest) *pu.DeleteMeResponse {
+func (u *userUseCase) DeleteMe(ctx context.Context, p *pu.DeleteMeRequest) (*pu.DeleteMeResponse, error) {
 	res := pu.DeleteMeResponse{}
 	err := u.UserRepository.DeleteMe(ctx, p.GetToken())
 	if err != nil {
 		if err != nil {
 			res.Status = http.StatusBadRequest
-			return &res
+			return &res, nil
 		}
 	}
 	res.Status = http.StatusCreated
-	return &res
+	return &res, nil
 }

@@ -4,8 +4,10 @@ import (
 	"context"
 	"github.com/2018-miraikeitai-org/Rakusale-Another-Server/domain/model"
 	"github.com/2018-miraikeitai-org/Rakusale-Another-Server/domain/repository"
+	"github.com/2018-miraikeitai-org/Rakusale-Another-Server/interfaces/server/handler"
 	pv "github.com/2018-miraikeitai-org/Rakusale-Another-Server/interfaces/server/rpc/vegetable"
 	"github.com/jinzhu/gorm"
+	"os"
 )
 
 // VegetableRepository is
@@ -78,7 +80,7 @@ func (r *VegetableRepository) FindAllVegetables(ctx context.Context) ([]*pv.Vege
 }
 
 // AddMyVegetable is
-func (r *VegetableRepository) AddMyVegetable(ctx context.Context, token string, v *pv.Vegetable) error {
+func (r *VegetableRepository) AddMyVegetable(ctx context.Context, token string, p *pv.PostMyVegetableRequest) error {
 	user := model.User{}
 	shop := model.Shop{}
 	// トークンに紐付く直売所を取得
@@ -89,9 +91,26 @@ func (r *VegetableRepository) AddMyVegetable(ctx context.Context, token string, 
 	if err := r.Conn.Find(&shop, user.MyShop.ID).Related(&shop.Vegetables).Error; err != nil {
 		return err
 	}
-	shop.Vegetables = append(shop.Vegetables, ProtocolToVegetable(v))
+	vegetable := ProtocolToVegetable(p.GetVegetable())
+	shop.Vegetables = append(shop.Vegetables, vegetable)
 	// データを更新し、更新
 	if err := r.Conn.Save(&shop).Error; err != nil {
+		return err
+	}
+	// Regist Vegetable Image
+	vID := shop.Vegetables[len(shop.Vegetables)-1].ID
+	vImage := p.GetImage().GetData()
+	err := handler.SendImage(vImage, string(vID), "VEGETABLE_PATH")
+	if err != nil {
+		return err
+	}
+	if err := r.Conn.Find(&vegetable, vID).Error; err != nil {
+		return err
+	}
+	ROOT := os.Getenv("GOOGLE_CLOUD_STORAGE_PUBLIC_PATH")
+	DIRPATH := os.Getenv("VEGETABLE_PATH")
+	vegetable.ImagePath = ROOT + DIRPATH + string(vID) + ".jpg"
+	if err := r.Conn.Save(&vegetable).Error; err != nil {
 		return err
 	}
 	return nil

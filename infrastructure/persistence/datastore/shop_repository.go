@@ -4,8 +4,10 @@ import (
 	"context"
 	"github.com/2018-miraikeitai-org/Rakusale-Another-Server/domain/model"
 	"github.com/2018-miraikeitai-org/Rakusale-Another-Server/domain/repository"
+	"github.com/2018-miraikeitai-org/Rakusale-Another-Server/interfaces/server/handler"
 	ps "github.com/2018-miraikeitai-org/Rakusale-Another-Server/interfaces/server/rpc/shop"
 	"github.com/jinzhu/gorm"
+	"os"
 )
 
 // ShopRepository is
@@ -38,9 +40,9 @@ func (r *ShopRepository) FindAllShops(ctx context.Context) ([]*ps.ResponseShop, 
 }
 
 // AddMyShop is
-func (r *ShopRepository) AddMyShop(ctx context.Context, token string, s *ps.RequestShop) error {
+func (r *ShopRepository) AddMyShop(ctx context.Context, token string, p *ps.PostMyShopRequest) error {
 	user := model.User{}
-	shop := ProtocolToShop(s)
+	shop := ProtocolToShop(p.GetShop())
 	// トークンに紐付く直売所を取得
 	if err := r.Conn.Find(&user, "access_token = ?", token).Error; err != nil {
 		return err
@@ -49,11 +51,27 @@ func (r *ShopRepository) AddMyShop(ctx context.Context, token string, s *ps.Requ
 	if err := r.Conn.Save(&user).Error; err != nil {
 		return err
 	}
+	// Regist Shop Image
+	sID := user.MyShop.ID
+	sImage := p.GetImage().GetData()
+	err := handler.SendImage(sImage, string(sID), "SHOP_PATH")
+	if err != nil {
+		return err
+	}
+	if err := r.Conn.Find(&shop, sID).Error; err != nil {
+		return err
+	}
+	ROOT := os.Getenv("GOOGLE_CLOUD_STORAGE_PUBLIC_PATH")
+	DIRPATH := os.Getenv("SHOP_PATH")
+	shop.ImagePath = ROOT + DIRPATH + string(sID) + ".jpg"
+	if err := r.Conn.Save(&shop).Error; err != nil {
+		return err
+	}
 	return nil
 }
 
 // UpdateMyShop is
-func (r *ShopRepository) UpdateMyShop(ctx context.Context, token string, s *ps.RequestShop) error {
+func (r *ShopRepository) UpdateMyShop(ctx context.Context, token string, p *ps.RequestShop) error {
 	user := model.User{}
 	shop := model.Shop{}
 	// トークンに紐付く直売所を取得
@@ -65,20 +83,20 @@ func (r *ShopRepository) UpdateMyShop(ctx context.Context, token string, s *ps.R
 		return err
 	}
 	// 値あるところだけ変更
-	if s.ImagePath != "" {
-		shop.ImagePath = s.ImagePath
+	if p.ImagePath != "" {
+		shop.ImagePath = p.ImagePath
 	}
-	if s.Introduction != "" {
-		shop.Introduction = s.Introduction
+	if p.Introduction != "" {
+		shop.Introduction = p.Introduction
 	}
-	if s.Latitude != 0 {
-		shop.Latitude = s.Latitude
+	if p.Latitude != 0 {
+		shop.Latitude = p.Latitude
 	}
-	if s.Longitude != 0 {
-		shop.Longitude = s.Longitude
+	if p.Longitude != 0 {
+		shop.Longitude = p.Longitude
 	}
-	if s.Name != "" {
-		shop.Name = s.Name
+	if p.Name != "" {
+		shop.Name = p.Name
 	}
 	if err := r.Conn.Save(&shop).Error; err != nil {
 		return err

@@ -9,12 +9,12 @@ import (
 
 // VegetableUseCase is ...
 type VegetableUseCase interface {
-	GetMyBoughtVegetables(ctx context.Context, p *pv.GetMyVegetablesRequest) *pv.GetMyVegetablesResponse
-	GetMySoldVegetables(ctx context.Context, p *pv.GetMyVegetablesRequest) *pv.GetMyVegetablesResponse
-	GetAllVegetables(ctx context.Context) *pv.GetAllVegetablesResponse
-	PostMyVegetable(ctx context.Context, p *pv.PostMyVegetableRequest) *pv.PostMyVegetableResponse
-	PutMyVegetable(ctx context.Context, p *pv.PutMyVegetableRequest) *pv.PutMyVegetableResponse
-	DeleteMyVegetable(ctx context.Context, p *pv.DeleteMyVegetableRequest) *pv.DeleteMyVegetableResponse
+	GetMyBoughtVegetables(ctx context.Context, p *pv.GetMyVegetablesRequest) (*pv.GetMyVegetablesResponse, error)
+	GetMySoldVegetables(ctx context.Context, p *pv.GetMyVegetablesRequest) (*pv.GetMyVegetablesResponse, error)
+	GetAllVegetables(ctx context.Context, p *pv.VegetablesEmpty) (*pv.GetAllVegetablesResponse, error)
+	PostMyVegetable(ctx context.Context, p *pv.PostMyVegetableRequest) (*pv.PostMyVegetableResponse, error)
+	PutMyVegetable(ctx context.Context, p *pv.PutMyVegetableRequest) (*pv.PutMyVegetableResponse, error)
+	DeleteMyVegetable(ctx context.Context, p *pv.DeleteMyVegetableRequest) (*pv.DeleteMyVegetableResponse, error)
 }
 
 type vegetableUseCase struct {
@@ -26,75 +26,74 @@ func NewVegetableUseCase(r repository.VegetableRepository) VegetableUseCase {
 	return &vegetableUseCase{r}
 }
 
-func (u *vegetableUseCase) GetMyBoughtVegetables(ctx context.Context, p *pv.GetMyVegetablesRequest) *pv.GetMyVegetablesResponse {
+func (u *vegetableUseCase) GetMyBoughtVegetables(ctx context.Context, p *pv.GetMyVegetablesRequest) (*pv.GetMyVegetablesResponse, error) {
 	res := pv.GetMyVegetablesResponse{}
 	token := p.GetToken()
 	vegetables, err := u.VegetableRepository.FindMyBoughtVegetables(ctx, token)
 	if err != nil {
 		res.Status = http.StatusNoContent
-		return &res
+		return &res, nil
 	}
 	res.Vegetables = vegetables
 	res.Status = http.StatusOK
-	return &res
+	return &res, nil
 }
 
-func (u *vegetableUseCase) GetMySoldVegetables(ctx context.Context, p *pv.GetMyVegetablesRequest) *pv.GetMyVegetablesResponse {
+func (u *vegetableUseCase) GetMySoldVegetables(ctx context.Context, p *pv.GetMyVegetablesRequest) (*pv.GetMyVegetablesResponse, error) {
 	res := pv.GetMyVegetablesResponse{}
 	token := p.GetToken()
 	vegetables, err := u.VegetableRepository.FindMySoldVegetables(ctx, token)
 	if err != nil {
 		res.Status = http.StatusNoContent
-		return &res
+		return &res, nil
 	}
 	res.Vegetables = vegetables
 	res.Status = http.StatusOK
-	return &res
+	return &res, nil
 }
 
-func (u *vegetableUseCase) GetAllVegetables(ctx context.Context) *pv.GetAllVegetablesResponse {
+func (u *vegetableUseCase) GetAllVegetables(ctx context.Context, p *pv.VegetablesEmpty) (*pv.GetAllVegetablesResponse, error) {
 	res := pv.GetAllVegetablesResponse{}
 	vegetables, err := u.VegetableRepository.FindAllVegetables(ctx)
 	if err != nil {
 		res.Status = http.StatusNoContent
-		return &res
+		return &res, nil
 	}
 	res.Vegetables = vegetables
 	res.Status = http.StatusOK
-	return &res
+	return &res, nil
 }
 
-func (u *vegetableUseCase) PostMyVegetable(ctx context.Context, p *pv.PostMyVegetableRequest) *pv.PostMyVegetableResponse {
+func (u *vegetableUseCase) PostMyVegetable(ctx context.Context, p *pv.PostMyVegetableRequest) (*pv.PostMyVegetableResponse, error) {
 	res := pv.PostMyVegetableResponse{}
 	token := p.GetToken()
-	vegetable := p.GetVegetable()
-	err := u.VegetableRepository.AddMyVegetable(ctx, token, vegetable)
+	err := u.VegetableRepository.AddMyVegetable(ctx, token, p)
 	if err != nil {
 		res.Status = http.StatusBadRequest
-		return &res
+		return &res, nil
 	}
 	res.Status = http.StatusCreated
-	return &res
+	return &res, nil
 }
 
-func (u *vegetableUseCase) PutMyVegetable(ctx context.Context, p *pv.PutMyVegetableRequest) *pv.PutMyVegetableResponse {
+func (u *vegetableUseCase) PutMyVegetable(ctx context.Context, p *pv.PutMyVegetableRequest) (*pv.PutMyVegetableResponse, error) {
 	res := pv.PutMyVegetableResponse{}
 	err := u.VegetableRepository.UpdateMyVegetable(ctx, p.GetToken(), p.GetVId(), p.GetVegetable())
 	if err != nil {
 		res.Status = http.StatusBadRequest
-		return &res
+		return &res, nil
 	}
 	res.Status = http.StatusCreated
-	return &res
+	return &res, nil
 }
 
-func (u *vegetableUseCase) DeleteMyVegetable(ctx context.Context, p *pv.DeleteMyVegetableRequest) *pv.DeleteMyVegetableResponse {
+func (u *vegetableUseCase) DeleteMyVegetable(ctx context.Context, p *pv.DeleteMyVegetableRequest) (*pv.DeleteMyVegetableResponse, error) {
 	res := pv.DeleteMyVegetableResponse{}
 	err := u.VegetableRepository.DeleteMyVegetable(ctx, p.GetToken(), p.GetVId())
 	if err != nil {
 		res.Status = http.StatusBadRequest
-		return &res
+		return &res, nil
 	}
 	res.Status = http.StatusAccepted
-	return &res
+	return &res, nil
 }
