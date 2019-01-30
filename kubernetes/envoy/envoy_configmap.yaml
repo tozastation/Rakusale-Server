@@ -8,11 +8,6 @@ data:
       "listeners": [
         {
           "address": "tcp://0.0.0.0:15001",
-          "ssl_context" : {
-            "cipher_suites" : "[ECDHE-RSA-AES256-GCM-SHA384|ECDHE-RSA-AES128-GCM-SHA256]",
-            "cert_chain_file" : "/etc/tlssecret/tls.crt",
-            "private_key_file" : "/etc/tlssecret/tls.key"
-          },
           "filters": [
             {
               "type": "read",
@@ -29,7 +24,7 @@ data:
                         {
                           "timeout_ms": 0,
                           "prefix": "/",
-                          "cluster": "grpc"
+                          "cluster": "rakusale-grpc"
                         }
                       ]
                     }
@@ -48,19 +43,19 @@ data:
         }
       ],
       "admin": {
-        "access_log_path": "/dev/stdout",
-        "address": "tcp://127.0.0.1:8001"
+       "access_log_path": "/dev/stdout",
+       "address": "tcp://127.0.0.1:8001"
       },
       "cluster_manager": {
         "clusters": [
           {
-            "name": "grpc",
+            "name": "rakusale-grpc",
             "features": "http2",
             "connect_timeout_ms": 250,
             "type": "strict_dns",
             "lb_type": "round_robin",
             "hosts": [{"url": "tcp://rakusale-grpc:3001"}]
-          }
+         }
         ]
       }
     }

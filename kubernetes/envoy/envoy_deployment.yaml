@@ -19,7 +19,7 @@ spec:
 
       containers:
         - name: envoy
-          image: envoyproxy/envoy:latest
+          image: envoyproxy/envoy:6e3633496f5a9412abdca8bac7db6b701ae8ce14
           command:
             - "/usr/local/bin/envoy"
           args:

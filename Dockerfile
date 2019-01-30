@@ -21,7 +21,7 @@ COPY --from=builder /go/src/github.com/2018-miraikeitai-org/Rakusale-Another-Ser
 ENV DB_TYPE=mysql
 #ENV CONNECTION_STRING=rakusale:rakusale@tcp(db)/rakusale?charset=utf8&parseTime=true
 ENV FILE_TMP="/image_tmp"
-ENV CONNECTION_STRING=rakusale:rakusale@tcp(127.0.0.1)/rakusale?charset=utf8&parseTime=true
+ENV CONNECTION_STRING=rakusale:rakusale@tcp(127.0.0.1:3306)/rakusale?charset=utf8&parseTime=true
 #ENV CONNECTION_STRING=rakusale:rakusale@tcp(127.0.0.1:3306)/rakusale?charset=utf8&parseTime=true
 
 # Rakusale Private & Public Key
