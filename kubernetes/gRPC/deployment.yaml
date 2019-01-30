@@ -1,7 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata: #Labels can be used to select objects and to find collections of objects that satisfy certain conditions
-  name: rakusale
+  name: rakusale-grpc
 spec:
   # レプリカ数の指定
   replicas: 2
@@ -9,13 +9,13 @@ spec:
   template:
     metadata:
       labels:
-        app: rakusale
+        app: rakusale-grpc
     spec:
       containers:
-        - name: api
-          image: gcr.io/miraikeitai2018-rakusale/github.com/2018-miraikeitai-org/rakusale-api:41e0265
+        - name: grpc-server
+          image: gcr.io/miraikeitai2018-rakusale/github.com/2018-miraikeitai-org/rakusale-another-server:885bd55
           ports:
-            - containerPort: 9001
+            - containerPort: 3001
           env:
             - name: SQL_USER
               valueFrom:

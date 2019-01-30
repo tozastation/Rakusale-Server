@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: "envoy"
+  name: "envoy-service"
+spec:
+  type: LoadBalancer
+  loadBalancerIP: "35.244.220.240"
+  selector:
+    app: "envoy"
+  ports:
+    - name: tcp
+      port: 15001
+      targetPort: 15001
