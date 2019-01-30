@@ -3,37 +3,39 @@ package handler
 import (
 	"fmt"
 	"github.com/2018-miraikeitai-org/Rakusale-Another-Server/domain/model"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	"os"
 )
-
-var db *gorm.DB
 
 // OpenDBConnection is
 func OpenDBConnection() *gorm.DB {
 	dbType := os.Getenv("DB_TYPE")
 	connectionString := os.Getenv("CONNECTION_STRING")
-	db, _ := gorm.Open(dbType, connectionString)
+	DB, err := gorm.Open(dbType, connectionString)
+	if err != nil {
+		fmt.Println(err)
+	}
 	// [Initialize] Database
-	db.AutoMigrate(&model.Vegetable{})
+	DB.AutoMigrate(&model.Vegetable{})
 	fmt.Println("[Init] Vegetable Model")
-	db.AutoMigrate(&model.Sell{})
+	DB.AutoMigrate(&model.Sell{})
 	fmt.Println("[Init] Sell Model")
-	db.AutoMigrate(&model.Buy{})
+	DB.AutoMigrate(&model.Buy{})
 	fmt.Println("[Init] Buy Model")
-	db.AutoMigrate(&model.SellList{})
+	DB.AutoMigrate(&model.SellList{})
 	fmt.Println("[Init] SellList Model")
-	db.AutoMigrate(&model.BuyList{})
+	DB.AutoMigrate(&model.BuyList{})
 	fmt.Println("[Init] BuyList Model")
-	db.AutoMigrate(&model.Shop{})
+	DB.AutoMigrate(&model.Shop{})
 	fmt.Println("[Init] Shop Model")
-	db.AutoMigrate(&model.User{})
+	DB.AutoMigrate(&model.User{})
 	fmt.Println("[Init] User Model")
 
-	return db
+	return DB
 }
 
 // CloseDBConnction is
-func CloseDBConnction() {
-	db.Close()
-}
+// func CloseDBConnction() {
+// 	DB.Close()
+// }

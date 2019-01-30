@@ -27,13 +27,14 @@ func InitGCS() error {
 func SendImage(b []byte, id string, env string) error {
 	fileName := id + ".jpg"
 	// Create
-	file, err := os.OpenFile("/tmp"+fileName, os.O_WRONLY|os.O_CREATE, 0666)
+	path := os.Getenv("FILE_TMP")
+	file, err := os.OpenFile(path+fileName, os.O_WRONLY|os.O_CREATE, 0666)
 	if err != nil {
 		return err
 	}
 	defer file.Close()
 	// Write
-	err = ioutil.WriteFile("/tmp"+fileName, b, 0666)
+	err = ioutil.WriteFile(path+fileName, b, 0666)
 	if err != nil {
 		return err
 	}
@@ -53,7 +54,7 @@ func SendImage(b []byte, id string, env string) error {
 	if err = acl.Set(CTX, storage.AllUsers, storage.RoleReader); err != nil {
 		return err
 	}
-	if err := os.Remove("/tmp" + fileName); err != nil {
+	if err := os.Remove(path + fileName); err != nil {
 		return err
 	}
 	return nil

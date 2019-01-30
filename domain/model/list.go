@@ -3,11 +3,13 @@ package model
 // BuyList is ...
 type BuyList struct {
 	BaseModel
-	List []Buy
+	UserID uint
+	List   []Buy
 }
 
 // SellList is ...
 type SellList struct {
 	BaseModel
-	List []Sell
+	UserID uint
+	List   []Sell
 }

@@ -12,8 +12,8 @@ type User struct {
 	Birthday    string
 	IsSaler     bool
 	IsBuyer     bool
-	Password    []byte `gorm:"not null"`
-	AccessToken string
+	Password    []byte   `gorm:"not null"`
+	AccessToken string   `gorm:"type:varchar(1000);" `
 	MyShop      Shop     //直売所リスト
 	BuyList     BuyList  //購入リスト
 	SellList    SellList //販売リスト

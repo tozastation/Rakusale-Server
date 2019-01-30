@@ -8,7 +8,10 @@ ENV GOOS=linux
 ENV GOARCH=amd64
 
 # Run Command
-RUN make
+#RUN go get -u github.com/golang/dep/cmd/dep
+#RUN dep init 
+#RUN dep ensure  
+RUN go build -o app main.go
 
 # Runtime Container
 FROM alpine
@@ -16,7 +19,9 @@ RUN apk add --no-cache ca-certificates
 COPY --from=builder /go/src/github.com/2018-miraikeitai-org/Rakusale-Another-Server/app /app
 COPY --from=builder /go/src/github.com/2018-miraikeitai-org/Rakusale-Another-Server/secret /secret
 ENV DB_TYPE=mysql
-ENV CONNECTION_STRING=rakusale:rakusale@tcp(db)/rakusale?charset=utf8&parseTime=true
+#ENV CONNECTION_STRING=rakusale:rakusale@tcp(db)/rakusale?charset=utf8&parseTime=true
+ENV FILE_TMP="/image_tmp"
+ENV CONNECTION_STRING=rakusale:rakusale@tcp(127.0.0.1)/rakusale?charset=utf8&parseTime=true
 #ENV CONNECTION_STRING=rakusale:rakusale@tcp(127.0.0.1:3306)/rakusale?charset=utf8&parseTime=true
 
 # Rakusale Private & Public Key
@@ -31,6 +36,6 @@ ENV GOOGLE_CLOUD_STORAGE_PUBLIC_PATH="https://storage.googleapis.com/miraikeitai
 ENV SHOP_PATH="shops/" 
 ENV VEGETABLE_PATH="vegetables/" 
 ENV USER_PATH="users/" 
+RUN mkdir /image_tmp
 EXPOSE 3001
-EXPOSE 3002
 ENTRYPOINT ["/app"]

@@ -14,38 +14,35 @@ import (
 )
 
 func main() {
-	listenPortOnAuth, err := net.Listen("tcp", ":3001")
+	listenPort, err := net.Listen("tcp", ":3001")
 	if err != nil {
 		log.Fatalln(err)
 	}
-	listenPortNoAuth, err := net.Listen("tcp", ":3002")
+	server := grpc.NewServer()
+	err = handler.InitGCS()
 	if err != nil {
 		log.Fatalln(err)
 	}
-	serverOnAuth := grpc.NewServer()
-	serverNoAuth := grpc.NewServer()
-	err := handler.InitGCS()
-	if err != nil {
-		log.Fatalln(err)
-	}
+	DB := handler.OpenDBConnection()
+	defer DB.Close()
+
 	// [Initialize]
 	// User
-	userRepo := datastore.NewUserRepository(handler.OpenDBConnection())
+	userRepo := datastore.NewUserRepository(DB)
 	userUseCase := usecase.NewUserUseCase(userRepo)
-	pu.RegisterUsersServer(serverOnAuth, userUseCase)
+	pu.RegisterUsersServer(server, userUseCase)
 	// Shop
-	shopRepo := datastore.NewShopRepository(handler.OpenDBConnection())
+	shopRepo := datastore.NewShopRepository(DB)
 	shopUseCase := usecase.NewShopUseCase(shopRepo)
-	ps.RegisterShopsServer(serverOnAuth, shopUseCase)
+	ps.RegisterShopsServer(server, shopUseCase)
 	// Vegetable
-	vegetableRepo := datastore.NewVegetableRepository(handler.OpenDBConnection())
+	vegetableRepo := datastore.NewVegetableRepository(DB)
 	vegetableUseCase := usecase.NewVegetableUseCase(vegetableRepo)
-	pv.RegisterVegetablesServer(serverOnAuth, vegetableUseCase)
+	pv.RegisterVegetablesServer(server, vegetableUseCase)
 	// Entry
-	entryRepo := datastore.NewEntryRepository(handler.OpenDBConnection())
+	entryRepo := datastore.NewEntryRepository(DB)
 	entryUseCase := usecase.NewEntryUseCase(entryRepo)
-	pe.RegisterEntrysServer(serverNoAuth, entryUseCase)
+	pe.RegisterEntrysServer(server, entryUseCase)
 	// Start Server
-	serverOnAuth.Serve(listenPortOnAuth)
-	serverNoAuth.Serve(listenPortNoAuth)
+	server.Serve(listenPort)
 }

@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"fmt"
 	"github.com/2018-miraikeitai-org/Rakusale-Another-Server/domain/repository"
 	ps "github.com/2018-miraikeitai-org/Rakusale-Another-Server/interfaces/server/rpc/shop"
 	"net/http"
@@ -29,6 +30,7 @@ func (u *shopUseCase) GetMyShop(ctx context.Context, p *ps.GetMyShopRequest) (*p
 	res := ps.GetMyShopResponse{}
 	shop, err := u.ShopRepository.FindMyShop(ctx, p.GetToken())
 	if err != nil {
+		fmt.Printf("[ShopRepository] GetMyShop : %s", err)
 		res.Status = http.StatusBadRequest
 		return &res, nil
 	}
@@ -41,6 +43,7 @@ func (u *shopUseCase) GetAllShops(ctx context.Context, p *ps.ShopsEmpty) (*ps.Ge
 	res := ps.GetAllShopsResponse{}
 	shops, err := u.ShopRepository.FindAllShops(ctx)
 	if err != nil {
+		fmt.Printf("[ShopRepository] GetAllShops : %s", err)
 		res.Status = http.StatusBadRequest
 		return &res, nil
 	}
@@ -53,6 +56,7 @@ func (u *shopUseCase) PostMyShop(ctx context.Context, p *ps.PostMyShopRequest) (
 	res := ps.PostMyShopResponse{}
 	err := u.ShopRepository.AddMyShop(ctx, p.GetToken(), p)
 	if err != nil {
+		fmt.Printf("[ShopRepository] PostMyShop : %s", err)
 		res.Status = http.StatusBadRequest
 		return &res, nil
 	}
@@ -64,6 +68,7 @@ func (u *shopUseCase) PutMyShop(ctx context.Context, p *ps.PutMyShopRequest) (*p
 	res := ps.PutMyShopResponse{}
 	err := u.ShopRepository.UpdateMyShop(ctx, p.GetToken(), p.GetShop())
 	if err != nil {
+		fmt.Printf("[ShopRepository] PutMyShop : %s", err)
 		res.Status = http.StatusBadRequest
 		return &res, nil
 	}
@@ -75,6 +80,7 @@ func (u *shopUseCase) DeleteMyShop(ctx context.Context, p *ps.DeleteMyShopReques
 	res := ps.DeleteMyShopResponse{}
 	err := u.ShopRepository.DeleteMyShop(ctx, p.GetToken(), p.GetShopId())
 	if err != nil {
+		fmt.Printf("[ShopRepository] DeleteMyShop : %s", err)
 		res.Status = http.StatusBadRequest
 		return &res, nil
 	}

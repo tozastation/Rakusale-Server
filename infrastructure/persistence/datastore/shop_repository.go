@@ -2,12 +2,14 @@ package datastore
 
 import (
 	"context"
+	"fmt"
 	"github.com/2018-miraikeitai-org/Rakusale-Another-Server/domain/model"
 	"github.com/2018-miraikeitai-org/Rakusale-Another-Server/domain/repository"
 	"github.com/2018-miraikeitai-org/Rakusale-Another-Server/interfaces/server/handler"
 	ps "github.com/2018-miraikeitai-org/Rakusale-Another-Server/interfaces/server/rpc/shop"
 	"github.com/jinzhu/gorm"
 	"os"
+	"strconv"
 )
 
 // ShopRepository is
@@ -47,23 +49,25 @@ func (r *ShopRepository) AddMyShop(ctx context.Context, token string, p *ps.Post
 	if err := r.Conn.Find(&user, "access_token = ?", token).Error; err != nil {
 		return err
 	}
+	fmt.Println(user.Name)
 	user.MyShop = shop
 	if err := r.Conn.Save(&user).Error; err != nil {
 		return err
 	}
+	fmt.Println(user.MyShop)
 	// Regist Shop Image
 	sID := user.MyShop.ID
 	sImage := p.GetImage().GetData()
-	err := handler.SendImage(sImage, string(sID), "SHOP_PATH")
+	err := handler.SendImage(sImage, strconv.FormatInt(sID, 10), "SHOP_PATH")
 	if err != nil {
-		return err
+		fmt.Println(err)
 	}
 	if err := r.Conn.Find(&shop, sID).Error; err != nil {
 		return err
 	}
 	ROOT := os.Getenv("GOOGLE_CLOUD_STORAGE_PUBLIC_PATH")
 	DIRPATH := os.Getenv("SHOP_PATH")
-	shop.ImagePath = ROOT + DIRPATH + string(sID) + ".jpg"
+	shop.ImagePath = ROOT + DIRPATH + strconv.FormatInt(sID, 10) + ".jpg"
 	if err := r.Conn.Save(&shop).Error; err != nil {
 		return err
 	}

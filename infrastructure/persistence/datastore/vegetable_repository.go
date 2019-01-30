@@ -2,12 +2,14 @@ package datastore
 
 import (
 	"context"
+	"fmt"
 	"github.com/2018-miraikeitai-org/Rakusale-Another-Server/domain/model"
 	"github.com/2018-miraikeitai-org/Rakusale-Another-Server/domain/repository"
 	"github.com/2018-miraikeitai-org/Rakusale-Another-Server/interfaces/server/handler"
 	pv "github.com/2018-miraikeitai-org/Rakusale-Another-Server/interfaces/server/rpc/vegetable"
 	"github.com/jinzhu/gorm"
 	"os"
+	"strconv"
 )
 
 // VegetableRepository is
@@ -24,7 +26,7 @@ func NewVegetableRepository(Conn *gorm.DB) repository.VegetableRepository {
 func (r *VegetableRepository) FindMyBoughtVegetables(ctx context.Context, token string) ([]*pv.Vegetable, error) {
 	user := model.User{}
 	buyList := model.BuyList{}
-	vegetables := []*model.Vegetable{}
+	vegetables := []model.Vegetable{}
 	// ユーザの購入リスト取得
 	if err := r.Conn.Find(&user, "access_token = ?", token).Related(&user.BuyList).Error; err != nil {
 		return nil, err
@@ -39,7 +41,7 @@ func (r *VegetableRepository) FindMyBoughtVegetables(ctx context.Context, token 
 			return nil, err
 		} // 購入に紐付く野菜を取得
 		for _, b := range buy.Vegetables {
-			vegetables = append(vegetables, &b)
+			vegetables = append(vegetables, b)
 		}
 	}
 	return VegetableToProtocol(vegetables), nil
@@ -48,31 +50,32 @@ func (r *VegetableRepository) FindMyBoughtVegetables(ctx context.Context, token 
 // FindMySoldVegetables is ...
 func (r *VegetableRepository) FindMySoldVegetables(ctx context.Context, token string) ([]*pv.Vegetable, error) {
 	user := model.User{}
-	sellList := model.SellList{}
-	vegetables := []*model.Vegetable{}
-	// ユーザの購入リスト取得
-	if err := r.Conn.Find(&user, "access_token = ?", token).Related(&user.SellList).Error; err != nil {
+	shop := model.Shop{}
+	vegetable := []model.Vegetable{}
+	v := []model.Vegetable{}
+	// ユーザ取得
+	if err := r.Conn.Find(&user, "access_token = ?", token).Error; err != nil {
 		return nil, err
 	}
-	// 購入リストから購入を１つずつ取得
-	if err := r.Conn.Find(&sellList, user.SellList.ID).Related(&sellList.List).Error; err != nil {
+	// 直売所取得
+	if err := r.Conn.Model(&user).Related(&shop).Error; err != nil {
 		return nil, err
 	}
-	for _, a := range sellList.List { // 購入から野菜を１つずつ購入
-		sell := model.Sell{} // 購入
-		if err := r.Conn.Find(&sell, a.ID).Related(&sell.Vegetables).Error; err != nil {
-			return nil, err
-		} // 購入に紐付く野菜を取得
-		for _, b := range sell.Vegetables {
-			vegetables = append(vegetables, &b)
-		}
+	// 直売所取得
+	if err := r.Conn.Model(&shop).Related(&vegetable).Error; err != nil {
+		return nil, err
 	}
-	return VegetableToProtocol(vegetables), nil
+	fmt.Println(vegetable)
+	// パース
+	for _, a := range vegetable {
+		v = append(v, a)
+	}
+	return VegetableToProtocol(v), nil
 }
 
 // FindAllVegetables is
 func (r *VegetableRepository) FindAllVegetables(ctx context.Context) ([]*pv.Vegetable, error) {
-	a := []*model.Vegetable{}
+	a := []model.Vegetable{}
 	if err := r.Conn.Limit(100).Find(&a).Error; err != nil {
 		return nil, err
 	}
@@ -83,33 +86,37 @@ func (r *VegetableRepository) FindAllVegetables(ctx context.Context) ([]*pv.Vege
 func (r *VegetableRepository) AddMyVegetable(ctx context.Context, token string, p *pv.PostMyVegetableRequest) error {
 	user := model.User{}
 	shop := model.Shop{}
+	fmt.Println("[RUN] AddMyVegetable")
 	// トークンに紐付く直売所を取得
-	if err := r.Conn.Find(&user, "access_token = ?", token).Related(&user.MyShop).Error; err != nil {
+	if err := r.Conn.Find(&user, "access_token = ?", token).Error; err != nil {
+		return err
+	}
+	if err := r.Conn.Model(&user).Related(&shop).Error; err != nil {
 		return err
 	}
 	// 直売所に紐付く野菜を取得
-	if err := r.Conn.Find(&shop, user.MyShop.ID).Related(&shop.Vegetables).Error; err != nil {
-		return err
-	}
+	fmt.Println(shop.Introduction)
 	vegetable := ProtocolToVegetable(p.GetVegetable())
 	shop.Vegetables = append(shop.Vegetables, vegetable)
 	// データを更新し、更新
 	if err := r.Conn.Save(&shop).Error; err != nil {
 		return err
 	}
+	fmt.Println(shop.Vegetables)
 	// Regist Vegetable Image
 	vID := shop.Vegetables[len(shop.Vegetables)-1].ID
+	fmt.Println(vID)
 	vImage := p.GetImage().GetData()
-	err := handler.SendImage(vImage, string(vID), "VEGETABLE_PATH")
+	err := handler.SendImage(vImage, strconv.FormatInt(vID, 10), "VEGETABLE_PATH")
 	if err != nil {
-		return err
+		fmt.Println(err)
 	}
 	if err := r.Conn.Find(&vegetable, vID).Error; err != nil {
 		return err
 	}
 	ROOT := os.Getenv("GOOGLE_CLOUD_STORAGE_PUBLIC_PATH")
 	DIRPATH := os.Getenv("VEGETABLE_PATH")
-	vegetable.ImagePath = ROOT + DIRPATH + string(vID) + ".jpg"
+	vegetable.ImagePath = ROOT + DIRPATH + strconv.FormatInt(vID, 10) + ".jpg"
 	if err := r.Conn.Save(&vegetable).Error; err != nil {
 		return err
 	}
@@ -177,7 +184,7 @@ func (r *VegetableRepository) DeleteMyVegetable(ctx context.Context, token strin
 }
 
 // VegetableToProtocol is ...
-func VegetableToProtocol(v []*model.Vegetable) []*pv.Vegetable {
+func VegetableToProtocol(v []model.Vegetable) []*pv.Vegetable {
 	result := []*pv.Vegetable{}
 	for _, a := range v {
 		b := pv.Vegetable{
