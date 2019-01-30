@@ -37,6 +37,5 @@ ENV SHOP_PATH="shops/"
 ENV VEGETABLE_PATH="vegetables/" 
 ENV USER_PATH="users/" 
 RUN mkdir /image_tmp
-RUN sleep 5
 EXPOSE 3001
 ENTRYPOINT ["/app"]

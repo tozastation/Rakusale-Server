@@ -6,12 +6,14 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	"os"
+	"time"
 )
 
 // OpenDBConnection is
 func OpenDBConnection() *gorm.DB {
 	dbType := os.Getenv("DB_TYPE")
 	connectionString := os.Getenv("CONNECTION_STRING")
+	time.Sleep(5)
 	DB, err := gorm.Open(dbType, connectionString)
 	if err != nil {
 		fmt.Println(err)
