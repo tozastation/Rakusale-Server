@@ -13,10 +13,9 @@ import (
 func OpenDBConnection() *gorm.DB {
 	dbType := os.Getenv("DB_TYPE")
 	connectionString := os.Getenv("CONNECTION_STRING")
-	time.Sleep(5)
 	DB, err := gorm.Open(dbType, connectionString)
 	if err != nil {
-		fmt.Println(err)
+		panic(err)
 	}
 	// [Initialize] Database
 	DB.AutoMigrate(&model.Vegetable{})
