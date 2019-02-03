@@ -54,7 +54,7 @@ data:
             "connect_timeout_ms": 250,
             "type": "strict_dns",
             "lb_type": "round_robin",
-            "hosts": [{"url": "tcp://rakusale-grpc:3001"}]
+            "hosts": [{"url": "tcp://rakusale-service:3001"}]
          }
         ]
       }

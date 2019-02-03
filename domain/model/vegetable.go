@@ -11,4 +11,5 @@ type Vegetable struct {
 	IsChemical     bool
 	ImagePath      string
 	ProductionDate string
+	Category       string
 }

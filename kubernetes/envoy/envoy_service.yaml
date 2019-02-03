@@ -6,7 +6,7 @@ metadata:
   name: "envoy-service"
 spec:
   type: LoadBalancer
-  loadBalancerIP: "35.244.220.240"
+  #loadBalancerIP: "35.244.220.240"
   selector:
     app: "envoy"
   ports:

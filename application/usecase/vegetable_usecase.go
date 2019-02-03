@@ -12,6 +12,7 @@ type VegetableUseCase interface {
 	GetMyBoughtVegetables(ctx context.Context, p *pv.GetMyVegetablesRequest) (*pv.GetMyVegetablesResponse, error)
 	GetMySoldVegetables(ctx context.Context, p *pv.GetMyVegetablesRequest) (*pv.GetMyVegetablesResponse, error)
 	GetAllVegetables(ctx context.Context, p *pv.VegetablesEmpty) (*pv.GetAllVegetablesResponse, error)
+	GetSingleShopAllVegetables(ctx context.Context, p *pv.GetSingleShopAllVegetablesRequest) (*pv.GetSingleShopAllVegetablesResponse, error)
 	PostMyVegetable(ctx context.Context, p *pv.PostMyVegetableRequest) (*pv.PostMyVegetableResponse, error)
 	PutMyVegetable(ctx context.Context, p *pv.PutMyVegetableRequest) (*pv.PutMyVegetableResponse, error)
 	DeleteMyVegetable(ctx context.Context, p *pv.DeleteMyVegetableRequest) (*pv.DeleteMyVegetableResponse, error)
@@ -55,6 +56,19 @@ func (u *vegetableUseCase) GetMySoldVegetables(ctx context.Context, p *pv.GetMyV
 func (u *vegetableUseCase) GetAllVegetables(ctx context.Context, p *pv.VegetablesEmpty) (*pv.GetAllVegetablesResponse, error) {
 	res := pv.GetAllVegetablesResponse{}
 	vegetables, err := u.VegetableRepository.FindAllVegetables(ctx)
+	if err != nil {
+		res.Status = http.StatusNoContent
+		return &res, nil
+	}
+	res.Vegetables = vegetables
+	res.Status = http.StatusOK
+	return &res, nil
+}
+
+func (u *vegetableUseCase) GetSingleShopAllVegetables(ctx context.Context, p *pv.GetSingleShopAllVegetablesRequest) (*pv.GetSingleShopAllVegetablesResponse, error) {
+	res := pv.GetSingleShopAllVegetablesResponse{}
+	sID := p.GetShopId()
+	vegetables, err := u.VegetableRepository.FindSingleShopAllVegetables(ctx, sID)
 	if err != nil {
 		res.Status = http.StatusNoContent
 		return &res, nil

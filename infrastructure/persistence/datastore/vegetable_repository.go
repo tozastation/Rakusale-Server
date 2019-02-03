@@ -7,6 +7,7 @@ import (
 	"github.com/2018-miraikeitai-org/Rakusale-Another-Server/domain/repository"
 	"github.com/2018-miraikeitai-org/Rakusale-Another-Server/interfaces/server/handler"
 	pv "github.com/2018-miraikeitai-org/Rakusale-Another-Server/interfaces/server/rpc/vegetable"
+	"github.com/2018-miraikeitai-org/Rakusale-Another-Server/interfaces/server/util"
 	"github.com/jinzhu/gorm"
 	"os"
 	"strconv"
@@ -23,7 +24,7 @@ func NewVegetableRepository(Conn *gorm.DB) repository.VegetableRepository {
 }
 
 // FindMyBoughtVegetables is ...
-func (r *VegetableRepository) FindMyBoughtVegetables(ctx context.Context, token string) ([]*pv.Vegetable, error) {
+func (r *VegetableRepository) FindMyBoughtVegetables(ctx context.Context, token string) ([]*pv.ResponseVegetable, error) {
 	user := model.User{}
 	buyList := model.BuyList{}
 	vegetables := []model.Vegetable{}
@@ -48,7 +49,7 @@ func (r *VegetableRepository) FindMyBoughtVegetables(ctx context.Context, token 
 }
 
 // FindMySoldVegetables is ...
-func (r *VegetableRepository) FindMySoldVegetables(ctx context.Context, token string) ([]*pv.Vegetable, error) {
+func (r *VegetableRepository) FindMySoldVegetables(ctx context.Context, token string) ([]*pv.ResponseVegetable, error) {
 	user := model.User{}
 	shop := model.Shop{}
 	vegetable := []model.Vegetable{}
@@ -74,7 +75,7 @@ func (r *VegetableRepository) FindMySoldVegetables(ctx context.Context, token st
 }
 
 // FindAllVegetables is
-func (r *VegetableRepository) FindAllVegetables(ctx context.Context) ([]*pv.Vegetable, error) {
+func (r *VegetableRepository) FindAllVegetables(ctx context.Context) ([]*pv.ResponseVegetable, error) {
 	a := []model.Vegetable{}
 	if err := r.Conn.Limit(100).Find(&a).Error; err != nil {
 		return nil, err
@@ -82,10 +83,25 @@ func (r *VegetableRepository) FindAllVegetables(ctx context.Context) ([]*pv.Vege
 	return VegetableToProtocol(a), nil
 }
 
+// FindSingleShopAllVegetables is
+func (r *VegetableRepository) FindSingleShopAllVegetables(ctx context.Context, sID int64) ([]*pv.ResponseVegetable, error) {
+	v := []model.Vegetable{}
+	s := model.Shop{}
+	// トークンに紐付く直売所を取得
+	if err := r.Conn.Find(&s, sID).Error; err != nil {
+		return nil, err
+	}
+	if err := r.Conn.Model(&s).Related(&v).Error; err != nil {
+		return nil, err
+	}
+	return VegetableToProtocol(v), nil
+}
+
 // AddMyVegetable is
 func (r *VegetableRepository) AddMyVegetable(ctx context.Context, token string, p *pv.PostMyVegetableRequest) error {
 	user := model.User{}
 	shop := model.Shop{}
+	fmt.Println(p.Vegetable.Category)
 	fmt.Println("[RUN] AddMyVegetable")
 	// トークンに紐付く直売所を取得
 	if err := r.Conn.Find(&user, "access_token = ?", token).Error; err != nil {
@@ -124,7 +140,7 @@ func (r *VegetableRepository) AddMyVegetable(ctx context.Context, token string, 
 }
 
 // UpdateMyVegetable is
-func (r *VegetableRepository) UpdateMyVegetable(ctx context.Context, token string, vID int64, v *pv.Vegetable) error {
+func (r *VegetableRepository) UpdateMyVegetable(ctx context.Context, token string, vID int64, v *pv.RequestVegetable) error {
 	user := model.User{}
 	shop := model.Shop{}
 	vegetable := model.Vegetable{}
@@ -145,11 +161,13 @@ func (r *VegetableRepository) UpdateMyVegetable(ctx context.Context, token strin
 		return err
 	}
 	// データを更新し、更新
-	vegetable.Name = v.Name
+	vegetable.Name = fmt.Sprint(v.Category)
 	vegetable.ProductionDate = v.ProductionDate
 	vegetable.Fee = v.Fee
 	vegetable.IsChemical = v.IsChemical
-	vegetable.ImagePath = v.ImagePath
+	fmt.Println("Category is")
+	fmt.Println(v.Category)
+	//vegetable.Category = v.Category
 	if err := r.Conn.Save(&vegetable).Error; err != nil {
 		return err
 	}
@@ -184,15 +202,17 @@ func (r *VegetableRepository) DeleteMyVegetable(ctx context.Context, token strin
 }
 
 // VegetableToProtocol is ...
-func VegetableToProtocol(v []model.Vegetable) []*pv.Vegetable {
-	result := []*pv.Vegetable{}
+func VegetableToProtocol(v []model.Vegetable) []*pv.ResponseVegetable {
+	result := []*pv.ResponseVegetable{}
 	for _, a := range v {
-		b := pv.Vegetable{
+		b := pv.ResponseVegetable{
+			Id:             a.ID,
 			Name:           a.Name,
 			Fee:            a.Fee,
 			ImagePath:      a.ImagePath,
 			ProductionDate: a.ProductionDate,
 			IsChemical:     a.IsChemical,
+			Category:       pv.VegetableType(pv.VegetableType_value[a.Category]),
 		}
 		result = append(result, &b)
 	}
@@ -200,13 +220,15 @@ func VegetableToProtocol(v []model.Vegetable) []*pv.Vegetable {
 }
 
 // ProtocolToVegetable is ...
-func ProtocolToVegetable(v *pv.Vegetable) model.Vegetable {
+func ProtocolToVegetable(v *pv.RequestVegetable) model.Vegetable {
+	category := fmt.Sprint(v.Category)
 	result := model.Vegetable{
-		Name:           v.Name,
+		Name:           util.ConvertEnumVegetable(category),
 		Fee:            v.Fee,
-		ImagePath:      v.ImagePath,
+		ImagePath:      "",
 		ProductionDate: v.ProductionDate,
 		IsChemical:     v.IsChemical,
+		Category:       category,
 	}
 	return result
 }
