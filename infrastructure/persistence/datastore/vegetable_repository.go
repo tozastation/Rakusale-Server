@@ -84,7 +84,7 @@ func (r *VegetableRepository) FindAllVegetables(ctx context.Context) ([]*pv.Resp
 }
 
 // FindSingleShopAllVegetables is
-func (r *VegetableRepository) FindSingleShopAllVegetables(ctx context.Context, sID int64) ([]*pv.ResponseVegetable, error) {
+func (r *VegetableRepository) FindSingleShopAllVegetables(ctx context.Context, sID int64) ([]*pv.ResponseShopVegetable, error) {
 	v := []model.Vegetable{}
 	s := model.Shop{}
 	// トークンに紐付く直売所を取得
@@ -94,7 +94,8 @@ func (r *VegetableRepository) FindSingleShopAllVegetables(ctx context.Context, s
 	if err := r.Conn.Model(&s).Related(&v).Error; err != nil {
 		return nil, err
 	}
-	return VegetableToProtocol(v), nil
+	buf, _ := model.CategorizeVegetable(v)
+	return ShopVegetableToProtocol(buf), nil
 }
 
 // AddMyVegetable is
@@ -213,6 +214,24 @@ func VegetableToProtocol(v []model.Vegetable) []*pv.ResponseVegetable {
 			ProductionDate: a.ProductionDate,
 			IsChemical:     a.IsChemical,
 			Category:       pv.VegetableType(pv.VegetableType_value[a.Category]),
+		}
+		result = append(result, &b)
+	}
+	return result
+}
+
+// VegetableToProtocol is ...
+func ShopVegetableToProtocol(v []model.CategorizedVegetable) []*pv.ResponseShopVegetable {
+	result := []*pv.ResponseShopVegetable{}
+	for _, a := range v {
+		b := pv.ResponseShopVegetable{
+			Name:           a.Name,
+			Fee:            a.Fee,
+			ImagePath:      a.ImagePath,
+			ProductionDate: a.ProductionDate,
+			IsChemical:     a.IsChemical,
+			Category:       pv.VegetableType(pv.VegetableType_value[a.Category]),
+			Amount:         a.Amount,
 		}
 		result = append(result, &b)
 	}
