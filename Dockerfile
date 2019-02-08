@@ -35,7 +35,8 @@ ENV GOOGLE_CLOUD_STORAGE_BUCKET_NAME="miraikeitai2018-rakusale"
 ENV GOOGLE_CLOUD_STORAGE_PUBLIC_PATH="https://storage.googleapis.com/miraikeitai2018-rakusale/"
 ENV SHOP_PATH="shops/" 
 ENV VEGETABLE_PATH="vegetables/" 
-ENV USER_PATH="users/" 
+ENV USER_PATH="users/"
+ENV FILE_TMP="/image_tmp/" 
 RUN mkdir /image_tmp
 EXPOSE 3001
 ENTRYPOINT ["/app"]
