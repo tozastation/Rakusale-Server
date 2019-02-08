@@ -8,6 +8,7 @@ import (
 	ps "github.com/2018-miraikeitai-org/Rakusale-Another-Server/interfaces/server/rpc/shop"
 	pu "github.com/2018-miraikeitai-org/Rakusale-Another-Server/interfaces/server/rpc/user"
 	pv "github.com/2018-miraikeitai-org/Rakusale-Another-Server/interfaces/server/rpc/vegetable"
+	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 	"log"
 	"net"
@@ -26,6 +27,7 @@ func main() {
 	DB := handler.OpenDBConnection()
 	defer DB.Close()
 
+	logger := logrus.New()
 	// [Initialize]
 	// User
 	userRepo := datastore.NewUserRepository(DB)
@@ -36,8 +38,8 @@ func main() {
 	shopUseCase := usecase.NewShopUseCase(shopRepo)
 	ps.RegisterShopsServer(server, shopUseCase)
 	// Vegetable
-	vegetableRepo := datastore.NewVegetableRepository(DB)
-	vegetableUseCase := usecase.NewVegetableUseCase(vegetableRepo)
+	vegetableRepo := datastore.NewVegetableRepository(DB, logger)
+	vegetableUseCase := usecase.NewVegetableUseCase(vegetableRepo, logger)
 	pv.RegisterVegetablesServer(server, vegetableUseCase)
 	// Entry
 	entryRepo := datastore.NewEntryRepository(DB)
