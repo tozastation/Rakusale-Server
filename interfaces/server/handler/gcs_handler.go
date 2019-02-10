@@ -76,10 +76,10 @@ func SendImage(b []byte, id string, env string) error {
 	// if err = acl.Set(CTX, storage.AllUsers, storage.RoleReader); err != nil {
 	// 	return err
 	// }
-	if err := os.Remove(path + fileName); err != nil {
-		fmt.Println(err)
-		return err
-	}
+	// if err := os.Remove(path + fileName); err != nil {
+	// 	fmt.Println(err)
+	// 	return err
+	// }
 	gcsClient.Close()
 	return nil
 }

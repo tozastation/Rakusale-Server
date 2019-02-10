@@ -131,10 +131,12 @@ func (r *VegetableRepository) AddMyVegetable(ctx context.Context, token string, 
 	// Regist Vegetable Image
 	vID := shop.Vegetables[len(shop.Vegetables)-1].ID
 	vImage := p.GetImage().GetData()
+	r.Logger.Infoln("[START] Send Image")
 	err := handler.SendImage(vImage, strconv.FormatInt(vID, 10), "VEGETABLE_PATH")
 	if err != nil {
 		r.Logger.Debug("[EXECUTE FAILURE!] %s\n", err)
 	}
+	r.Logger.Infoln("[END] Send Image")
 	if err := r.Conn.Find(&vegetable, vID).Error; err != nil {
 		return err
 	}
