@@ -39,25 +39,25 @@ func CategorizeVegetable(v []Vegetable) ([]CategorizedVegetable, error) {
 	lettuces := []Vegetable{}
 
 	for _, a := range v {
-		if a.Category == "SQUASH" {
+		if a.Category == "SQUASH" && a.IsSold == false {
 			squashes = append(squashes, a)
-		} else if a.Category == "CABBAGE" {
+		} else if a.Category == "CABBAGE" && a.IsSold == false {
 			cabbages = append(cabbages, a)
-		} else if a.Category == "SWEETPOTATO" {
+		} else if a.Category == "SWEETPOTATO" && a.IsSold == false {
 			sweetPotatos = append(sweetPotatos, a)
-		} else if a.Category == "POTATO" {
+		} else if a.Category == "POTATO" && a.IsSold == false {
 			potatos = append(potatos, a)
-		} else if a.Category == "RADISH" {
+		} else if a.Category == "RADISH" && a.IsSold == false {
 			radishes = append(radishes, a)
-		} else if a.Category == "ONION" {
+		} else if a.Category == "ONION" && a.IsSold == false {
 			onions = append(onions, a)
-		} else if a.Category == "CARROT" {
+		} else if a.Category == "CARROT" && a.IsSold == false {
 			carrots = append(carrots, a)
-		} else if a.Category == "BELLPEPPER" {
+		} else if a.Category == "BELLPEPPER" && a.IsSold == false {
 			bellPeppers = append(bellPeppers, a)
-		} else if a.Category == "SPINACH" {
+		} else if a.Category == "SPINACH" && a.IsSold == false {
 			spinaches = append(spinaches, a)
-		} else if a.Category == "LETTUCE" {
+		} else if a.Category == "LETTUCE" && a.IsSold == false {
 			lettuces = append(lettuces, a)
 		}
 	}
