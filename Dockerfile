@@ -20,7 +20,6 @@ COPY --from=builder /go/src/github.com/2018-miraikeitai-org/Rakusale-Another-Ser
 COPY --from=builder /go/src/github.com/2018-miraikeitai-org/Rakusale-Another-Server/secret /secret
 ENV DB_TYPE=mysql
 #ENV CONNECTION_STRING=rakusale:rakusale@tcp(db)/rakusale?charset=utf8&parseTime=true
-ENV FILE_TMP="/image_tmp"
 ENV CONNECTION_STRING=rakusale:rakusale@tcp(127.0.0.1:3306)/rakusale?charset=utf8&parseTime=true
 #ENV CONNECTION_STRING=rakusale:rakusale@tcp(127.0.0.1:3306)/rakusale?charset=utf8&parseTime=true
 
@@ -36,7 +35,7 @@ ENV GOOGLE_CLOUD_STORAGE_PUBLIC_PATH="https://storage.googleapis.com/miraikeitai
 ENV SHOP_PATH="shops/" 
 ENV VEGETABLE_PATH="vegetables/" 
 ENV USER_PATH="users/"
-ENV FILE_TMP="/image_tmp" 
+ENV FILE_TMP="/image_tmp/" 
 RUN mkdir /image_tmp
 EXPOSE 3001
 ENTRYPOINT ["/app"]

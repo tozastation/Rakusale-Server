@@ -20,10 +20,10 @@ func main() {
 		log.Fatalln(err)
 	}
 	server := grpc.NewServer()
-	err = handler.InitGCS()
-	if err != nil {
-		log.Fatalln(err)
-	}
+	// err = handler.InitGCS()
+	// if err != nil {
+	// 	log.Fatalln(err)
+	// }
 	DB := handler.OpenDBConnection()
 	defer DB.Close()
 
