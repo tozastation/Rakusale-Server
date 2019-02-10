@@ -14,4 +14,5 @@ type VegetableRepository interface {
 	AddMyVegetable(ctx context.Context, token string, p *pv.PostMyVegetableRequest) error
 	UpdateMyVegetable(ctx context.Context, token string, vID int64, v *pv.RequestVegetable) error
 	DeleteMyVegetable(ctx context.Context, token string, vID int64) error
+	BuyVegetables(ctx context.Context, token string, sID int64, category string, amount int64) error
 }

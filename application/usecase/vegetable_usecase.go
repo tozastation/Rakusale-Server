@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"fmt"
 	"github.com/2018-miraikeitai-org/Rakusale-Another-Server/domain/repository"
 	pv "github.com/2018-miraikeitai-org/Rakusale-Another-Server/interfaces/server/rpc/vegetable"
 	"github.com/sirupsen/logrus"
@@ -17,6 +18,7 @@ type VegetableUseCase interface {
 	PostMyVegetable(ctx context.Context, p *pv.PostMyVegetableRequest) (*pv.PostMyVegetableResponse, error)
 	PutMyVegetable(ctx context.Context, p *pv.PutMyVegetableRequest) (*pv.PutMyVegetableResponse, error)
 	DeleteMyVegetable(ctx context.Context, p *pv.DeleteMyVegetableRequest) (*pv.DeleteMyVegetableResponse, error)
+	BuyVegetables(ctx context.Context, p *pv.BuyVegetablesRequest) (*pv.BuyVegetablesResponse, error)
 }
 
 type vegetableUseCase struct {
@@ -136,5 +138,18 @@ func (u *vegetableUseCase) DeleteMyVegetable(ctx context.Context, p *pv.DeleteMy
 	}
 	res.Status = http.StatusAccepted
 	u.Logger.Infoln("[END] DeleteMyVegetableRPC is Called from Client")
+	return &res, nil
+}
+
+func (u *vegetableUseCase) BuyVegetables(ctx context.Context, p *pv.BuyVegetablesRequest) (*pv.BuyVegetablesResponse, error) {
+	u.Logger.Infoln("[START] BuyVegetablesRPC is Called from Client")
+	res := pv.BuyVegetablesResponse{}
+	err := u.VegetableRepository.BuyVegetables(ctx, p.GetToken(), p.GetSID(), fmt.Sprint(p.GetCategory()), p.GetAmount())
+	if err != nil {
+		u.Logger.Error("[EXECUTE FAILURE!] %s\n", err)
+		res.Status = http.StatusBadRequest
+		return &res, nil
+	}
+	res.Status = http.StatusCreated
 	return &res, nil
 }

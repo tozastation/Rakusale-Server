@@ -2,6 +2,7 @@ package datastore
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"github.com/2018-miraikeitai-org/Rakusale-Another-Server/domain/model"
 	"github.com/2018-miraikeitai-org/Rakusale-Another-Server/domain/repository"
@@ -208,6 +209,43 @@ func (r *VegetableRepository) DeleteMyVegetable(ctx context.Context, token strin
 		return err
 	}
 	r.Logger.Infoln("[END] DeleteMyVegetableRepository is Called from Usecase")
+	return nil
+}
+
+func (r *VegetableRepository) BuyVegetables(ctx context.Context, token string, sID int64, category string, amount int64) error {
+	user := model.User{}
+	shop := model.Shop{}
+	buyList := model.BuyList{}
+	buy := model.Buy{}
+	// トークンに紐付くユーザを取得
+	if err := r.Conn.Find(&user, "access_token = ?", token).Error; err != nil {
+		return err
+	}
+	// 直売所に紐付く野菜を取得
+	if err := r.Conn.Find(&shop, sID).Related(&shop.Vegetables).Error; err != nil {
+		return err
+	}
+	count := 0
+	for _, v := range shop.Vegetables {
+		if count == int(amount) {
+			break
+		}
+		if v.Category == category {
+			v.IsSold = true
+			buy.Vegetables = append(buy.Vegetables, v)
+			count++
+		}
+	}
+	// 売買更新処理
+	if count == int(amount) {
+		buyList.List = append(buyList.List, buy)
+		user.BuyList = buyList
+		if err := r.Conn.Save(&user).Error; err != nil {
+			return err
+		}
+	} else {
+		return errors.New("[Execute Error] empty amount of vegetable")
+	}
 	return nil
 }
 

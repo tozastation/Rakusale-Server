@@ -12,6 +12,7 @@ type Vegetable struct {
 	ImagePath      string
 	ProductionDate string
 	Category       string
+	IsSold         bool `gorm:"default:false"`
 }
 
 type CategorizedVegetable struct {
