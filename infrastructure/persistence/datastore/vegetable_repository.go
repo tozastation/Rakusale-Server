@@ -228,18 +228,21 @@ func (r *VegetableRepository) BuyVegetables(ctx context.Context, token string, s
 		return err
 	}
 	count := 0
+	fee := 0
 	for _, v := range shop.Vegetables {
 		if count == int(amount) {
 			break
 		}
 		if v.Category == category {
 			v.IsSold = true
+			fee = fee + int(v.Fee)
 			buy.Vegetables = append(buy.Vegetables, v)
 			count++
 		}
 	}
 	// 売買更新処理
 	if count == int(amount) {
+		buy.Total = fee
 		buyList.List = append(buyList.List, buy)
 		user.BuyList = buyList
 		if err := r.Conn.Save(&user).Error; err != nil {
