@@ -4,7 +4,7 @@ metadata: #Labels can be used to select objects and to find collections of objec
   name: rakusale-grpc
 spec:
   # レプリカ数の指定
-  replicas: 2
+  replicas: 1
   # Podのテンプレート(PodTemplate)
   template:
     metadata:
@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: grpc-server
-          image: gcr.io/miraikeitai2018-rakusale/github.com/2018-miraikeitai-org/rakusale-another-server:39cf7a6
+          image: gcr.io/miraikeitai2018-rakusale/github.com/2018-miraikeitai-org/rakusale-another-server:7b0bbca
           ports:
             - containerPort: 3001
           env:
