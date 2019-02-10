@@ -4,7 +4,6 @@ import (
 	"cloud.google.com/go/storage"
 	"context"
 	"fmt"
-	"io"
 	"io/ioutil"
 	"os"
 )
@@ -61,8 +60,13 @@ func SendImage(b []byte, id string, env string) error {
 	fmt.Println(PATH)
 	wc := bucket.Object(PATH).NewWriter(ctx)
 	wc.ACL = []storage.ACLRule{{Entity: storage.AllUsers, Role: storage.RoleReader}}
+	wc.ContentType = "image/jpg"
 	// Copy
-	if _, err = io.Copy(wc, file); err != nil {
+	// if _, err = io.Copy(wc, file); err != nil {
+	// 	fmt.Println(err)
+	// 	return err
+	// }
+	if _, err = wc.Write(b); err != nil {
 		fmt.Println(err)
 		return err
 	}
