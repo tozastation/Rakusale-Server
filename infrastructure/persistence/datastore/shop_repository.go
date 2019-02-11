@@ -129,6 +129,7 @@ func SingleShopToProtocol(v model.Shop) *ps.ResponseShop {
 		Introduction: v.Introduction,
 		Latitude:     v.Latitude,
 		Longitude:    v.Longitude,
+		ImagePath:    v.ImagePath,
 	}
 	return &result
 }
@@ -143,6 +144,7 @@ func ShopToProtocol(v []*model.Shop) []*ps.ResponseShop {
 			Introduction: a.Introduction,
 			Latitude:     a.Latitude,
 			Longitude:    a.Longitude,
+			ImagePath:    a.ImagePath,
 		}
 		result = append(result, &b)
 	}
@@ -156,6 +158,7 @@ func ProtocolToShop(v *ps.RequestShop) model.Shop {
 		Introduction: v.Introduction,
 		Latitude:     v.Latitude,
 		Longitude:    v.Longitude,
+		ImagePath:    v.ImagePath,
 	}
 	return result
 }
