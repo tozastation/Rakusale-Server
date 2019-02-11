@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: grpc-server
-          image: gcr.io/miraikeitai2018-rakusale/github.com/2018-miraikeitai-org/rakusale-another-server:c0150d4
+          image: gcr.io/miraikeitai2018-rakusale/github.com/2018-miraikeitai-org/rakusale-another-server:7f36d78
           ports:
             - containerPort: 3001
           env:
